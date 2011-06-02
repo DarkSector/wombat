@@ -1,0 +1,22 @@
+body
+{
+    background-color: #ccc;
+    background-image: none;
+    background-repeat: no-repeat;
+    font-family: "Trebuchet MS", Helvetica, Lucida Grande, Arial, sans-serif;
+    color: #999;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.header
+{
+    background-color: #aaa;
+}
+
+.footer
+{
+    background-color: #aaa;
+
+}
+
