@@ -31,7 +31,8 @@
         </div><!-- notification ends here-->
 
         <div class="work_area">
-
+            {% if session.logged_in %}
+            
             <div class="nav">
             </div><!--nav ends here-->
                 
@@ -39,6 +40,11 @@
                 {% block legal %}
                 {% endblock %}
             </div><!--legal ends here-->
+            
+            {% else %}
+            {% block hellowombat %}
+            {% endblock %}
+            {% endif %}
 
         </div><!-- work area ends here-->
 
