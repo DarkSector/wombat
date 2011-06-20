@@ -21,7 +21,6 @@ from wombat_config import config_file
 # create our little application :)
 app = Flask(__name__)
 app.config.from_object(config_file)
-#app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 
 def connect_db():
