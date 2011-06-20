@@ -1,22 +1,139 @@
 body
+{ 
+    font-family: sans-serif;
+    background: #ddd;
+    color: #666;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+a
+{	
+	color: #666;
+	text-decoration: none;
+}
+
+a:hover
 {
-    background-color: #ccc;
-    background-image: none;
-    background-repeat: no-repeat;
-    font-family: "Trebuchet MS", Helvetica, Lucida Grande, Arial, sans-serif;
-    color: #999;
-    font-size: 13px;
+	text-decoration: underline;
+}
+.header
+{
+    overflow: hidden;
+   /* border: 1px solid red;*/
+}
+
+.logo
+{
+    font-size: 30px;
+    
+}
+
+.logo p
+{ 
+   margin: 0 auto;
+   font-size: 40px;
+   font-family: 'trebuchet ms',arial,sans-serif;
+   float: left;
+   background-color: #999;
+   background-image: url('images/alert-overlay.png');
+   background-repeat: repeat-x;
+   display: inline-block;
+   padding: 5px 10px 6px;
+   color: #fff;
+   text-decoration: none;
+   line-height: 1;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+   cursor: pointer;
+   -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+   -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+   text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+   border-bottom: 1px solid rgba(0,0,0,0.25);   
+}
+
+.logo a
+{
     text-decoration: none;
 }
 
-.header
+.button 
 {
-    background-color: #aaa;
+   margin: 0 auto;
+   font-size: 13px;
+   font-family: Helvetica,arial,sans-serif;
+   background-color: transparent;
+   background-image: url('images/super-button-overlay.png');
+   background-repeat: repeat-x;
+   display: block;
+   padding: 4px 15px 6px;
+   color: #666;
+   text-decoration: none;
+   line-height: 1;
+   -moz-border-radius: 15px 15px 15px 15px;
+   -webkit-border-radius: 15px 15px 15px 15px;
+   cursor: pointer;
+   /*-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+   -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);*/
+   text-shadow: 0 1px 1px #FFFFFF;
+   border:1px solid rgba(0, 0, 0, 0.25);
+
 }
 
-.footer
+.logo span
 {
-    background-color: #aaa;
+	color: #FF6000;
 
 }
 
+.content
+{
+    width: 960px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding-top: 80px;
+}
+
+
+.legal
+{
+    float: right;
+    width: 750px;
+    overflow: hidden;
+}
+
+.admin
+{
+    float: right;
+    overflow: hidden;
+
+}
+
+
+.flash
+{ 
+	padding: 0.5em;
+    
+}
+.error
+{ 	
+	background: #ABDED7; 
+	padding: 0.5em; 
+}
+
+
+.nav
+{
+    width: 200px;
+    overflow: hidden;
+    float: left;
+    min-height: 600px;
+    overflow: hidden;
+    border: 1px solid red;
+}
+
+
+
+.nav ul
+{
+    list-style-type: none;
+}
