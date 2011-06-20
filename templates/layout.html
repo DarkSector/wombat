@@ -1,56 +1,43 @@
-<!doctype HTML>
-<head>
+<!doctype html>
+<html>
+    <head>
 <title>Wombat</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
-    <div class="page">
-        <div class="header">
-
-            <div class="logo">
-                <h1>Wombat AMS</h1>
-            </div><!-- logo ends here-->
-
-            <div class="account">
-                {% if not session.logged_in  %}
-                <a href="{{ url_for('login')}}">Log in</a>
+        
+    <div class="header">
+        <div class="logo">
+            <a href="{{ url_for('show_entries') }}"><p>W<span>o</span>mbat</p></a>
+        </div>
+            <div class="admin">
+                {% if not session.logged_in %}
+                <a class="button" href="{{ url_for('login') }}">login</a>
                 {% else %}
-                <a href="{{ url_for('logout') }}">Log out</a>
+                <a class="button" href="{{ url_for('logout') }}">logout</a>
                 {% endif %}
-            </div><!-- account ends here-->
-
-        </div><!-- header ends here -->
-
-        <div class="notification">
-            {% for message in get_flashed_message() %}
-            <div class="flash">
-                {{ message }}
             </div>
-            {% endfor %}
-        </div><!-- notification ends here-->
 
-        <div class="work_area">
-            {% if session.logged_in %}
-            
+        </div>
+
+        <div class="content">
+
             <div class="nav">
-            </div><!--nav ends here-->
-                
+                {% if session.logged_in %}
+                {% block navigation %}
+                {% endblock%}
+                {% endif %}
+            </div>
             <div class="legal">
-                {% block legal %}
-                {% endblock %}
-            </div><!--legal ends here-->
-            
-            {% else %}
-            {% block hellowombat %}
-            {% endblock %}
-            {% endif %}
 
-        </div><!-- work area ends here-->
+                {% for message in get_flashed_messages() %}
+                <div class=flash>{{ message }}</div>
+                {% endfor %}
+                {% block body %}{% endblock %}
+                
+            </div>
 
-        <div class="footer">
-        </div><!-- footer ends here-->
+        </div>
 
-    </div><!--page ends here-->
 </body>
 </html>
