@@ -6,6 +6,13 @@ body
     font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
+ul
+{
+    list-style-type: none;
+}
+
+
+
 a
 {	
 	color: #666;
