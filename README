@@ -2,3 +2,8 @@ Wombat Asset Management System
 
 Built using microframework called flask in python. Utilizes SQLite3 and SQLAlchemy. Currently under construction
 
+
+Creating Database:
+$python
+>>> import wombat
+>>> wombat.init_db()
