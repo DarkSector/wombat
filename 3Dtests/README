@@ -1,0 +1,2 @@
+This folder contains various scripts and methodologies related to rendering of ogre3D models. Using blender and python. 
+screen.py: Screenshot taker for a simple cube rendered using Blender. The 3D cube is rotated on x-y axis and screenshots are taken for the same.
