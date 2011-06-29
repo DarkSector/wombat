@@ -1,6 +1,6 @@
 #wombat 2011
 # configuration
-DATABASE = 'wombatdb.db'
+DB_URI = 'sqlite:///wombatDatabase.db'
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
