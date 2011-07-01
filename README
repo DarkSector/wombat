@@ -7,3 +7,11 @@ Creating Database:
 $python
 >>> import wombat
 >>> wombat.init_db()
+
+
+*************UPDATE*******************
+
+Use a simple one file database setup
+
+simply do:
+python setup.py
