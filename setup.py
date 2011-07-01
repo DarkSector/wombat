@@ -2,7 +2,6 @@
 import wombatdb
 
 
-
 #Create the database
 wombatdb.init_db()
 
