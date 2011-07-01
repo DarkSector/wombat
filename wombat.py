@@ -27,14 +27,15 @@ def connect_db():
     """Returns a new connection to the database."""
     return sqlite3.connect(app.config['DATABASE'])
 
-
+"""
+#Use the following only for non SQLAlchemy based system
 def init_db():
-    """Creates the database tables."""
+    #Creates the database tables.
     with closing(connect_db()) as db:
         with app.open_resource('schema.sql') as f:
             db.cursor().executescript(f.read())
         db.commit()
-
+"""
 
 @app.before_request
 def before_request():
