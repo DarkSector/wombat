@@ -15,3 +15,8 @@ Use a simple one file database setup
 
 simply do:
 python setup.py
+
+*************NOTE*********************
+
+The application will not work out of the box because the database doesn't consist of the tables being used in the code
+they have been changed. Wombat is being ported to work on the updated Database
