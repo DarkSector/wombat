@@ -16,6 +16,24 @@ Use a simple one file database setup
 simply do:
 python setup.py
 
+
+
+*************3DTests*******************
+simply do this after copying the Ogre3D folder into your working directory:
+
+./bootstrap
+./configure
+make
+
+after having done so you'll find the TutorialApplication.cpp has code and all you need to do after every time you 
+edit your code is:
+./build-execute.sh
+
+It will automatically compile
+build and copy the OgreApp binary to the dist/bin so that it can have resource.cfg ready and execute it.
+
+
+
 *************NOTE*********************
 
 The application will not work out of the box because the database doesn't consist of the tables being used in the code
