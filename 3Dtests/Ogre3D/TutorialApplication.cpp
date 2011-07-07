@@ -28,10 +28,28 @@ TutorialApplication::~TutorialApplication(void)
 //-------------------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
+
+
+
     // create your scene here :)
+    // Ogre::Entity* ogreHead = mSceneMgr->createEntity("Head", "ogrehead.mesh");
+
+    // Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(); 
+   //  headNode->attachObject(ogreHead);
+
+    //create another entity
+    Ogre::Entity* eyesMesh = mSceneMgr->createEntity("Eyes","eyes.mesh");
+    Ogre::SceneNode* eyesNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+    eyesNode->attachObject(eyesMesh);
+
+    //set ambient light
+    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+
+    // Create a light 
+    Ogre::Light* l = mSceneMgr->createLight("MainLight"); 
+    l->setPosition(11,80,50);
+
 }
-
-
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
