@@ -15,6 +15,8 @@ text_exts = ['.asm', '.bat', '.cfg', '.cg', '.conf', '.glsl', '.hlsl','.htm',
 
 def getType(name):
     """
+    returns the type of file. Example return image if the extension of the file is anything
+    in the image_exts like .jpg .png .gif etc.
     """
     base, ext = os.path.splitext(name)
     ext = ext.lower()
@@ -31,3 +33,11 @@ def getType(name):
         type = "other"
 
     return type
+
+
+#def check_field(data,table):
+    """ 
+    Returns a boolean value after checking if data is present in the mentioned table
+    Good for checking if username or email exists
+    """
+#    data = User.query.filter_by(data=)
