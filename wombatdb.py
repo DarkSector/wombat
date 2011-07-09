@@ -1,4 +1,3 @@
-#flask sqlalchemy test1
 #author: Pronoy Chopra
 
 
@@ -56,6 +55,20 @@ class User(db.Model):
         self.password = password
         self.active = active
 
+class UserData(db.Model):
+    __tablename__ = 'user_data'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    nick = db.Column(db.String(255))
+    vcs_user = db.Column(db.String(255))
+    vcs_pass = db.Column(db.String(255))
+    user_id = db.Column(db.String(255),db.ForeignKey('users.id'))
+
+    def __init__(self,name=None, nick=None,vcs_user=None,vcs_pass=None):
+        self.name = name
+        self.nick = nick
+        self.vcs_user = vcs_user
+        self.vcs_pass = vcs_pass
 
 class Dir(db.Model):
     __tablename__ = 'dirs'
