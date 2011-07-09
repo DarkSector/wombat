@@ -3,22 +3,43 @@ Wombat Asset Management System
 Built using microframework called flask in python. Utilizes SQLite3 and SQLAlchemy. Currently under construction
 
 
-Creating Database:
-$python
->>> import wombat
->>> wombat.init_db()
+**********************UPDATE******************************
 
-
-*************UPDATE*******************
-
-Use a simple one file database setup
+Use a simple one file database and repository setup
 
 simply do:
 python setup.py
 
+*************CREATING A DUMMY REPOSITORY******************
+Following the Ubuntu way here, pretty sure it should work for the rest of the distros, commands are generic except
+the package manager, but please be sure to check your distro's man page to create a dummy localhost repo
 
+sudo aptitude install libapache2-svn
+sudo mkdir /home/svn/dummy
+sudo svnadmin create /home/svn/dummy
+sudo groupadd -g 1203 subversion
+sudo usermod -a -G subversion www-data
+sudo chown -R www-data:subversion dummy
+sudo chmod -R g+rws dummy
 
-*************3DTests*******************
+okay this should have setup your dummy repository in /home/svn/dummy but access is not given through http:// or https://
+for http:// add the following to /etc/apache2/mods-available/dav_svn.conf
+
+<Location /svn/dummy>
+    DAV svn
+    SVNPath /home/svn/dummy
+    AuthType Basic
+    AuthName "dummy subversion repository"
+    AuthUserFile /etc/subversion/passwd
+    <LimitExcept GET PROPFIND OPTIONS REPORT>
+        Require valid-user
+    </LimitExcept>
+</Location>
+
+and do this to restart apache2
+sudo /etc/init.d/apache2 restart
+
+**********************3DTests*****************************
 simply do this after copying the Ogre3D folder into your working directory:
 
 ./bootstrap
