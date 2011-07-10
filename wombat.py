@@ -3,7 +3,7 @@
     Wombat 
     ~~~~~~
 
-    An Asset Managment System written using Flask with sqlalchemy
+    An Asset Managment System written using Flask with SQLAlchemy
     
 
     :Author: Pronoy Chopra
@@ -13,15 +13,21 @@
 """
 from __future__ import with_statement
 from sqlite3 import dbapi2 as sqlite3
-from contextlib import closing
+#from contextlib import closing
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
 from wombat_config import config_file
-
+from wombat_config.config_file import LOCAL_REPO
+from wombatdb import db
+from wombatdb import User
+from backend.svnfunctions import SVNfunctions
+from backend.functions import Base
 # create our little application :)
 app = Flask(__name__)
 app.config.from_object(config_file)
 
+func = Base()
+svn = SVNfunctions()
 
 def connect_db():
     """Returns a new connection to the database."""
@@ -49,14 +55,51 @@ def after_request(response):
     g.db.close()
     return response
 
-
 @app.route('/')
-def show_entries():
-    cur = g.db.execute('select title, text from entries order by id desc')
-    entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
-    return render_template('show_entries.html', entries=entries)
+def server_status():
+    url_out = svn.get_url()
+    #returns the URL of the local repository
+    svn.update_copy()
+    #call this function before fetching any other information
+    revision = svn.get_revision_no()
+    #gets the revision number
+    info = func.get_info(LOCAL_REPO)
+    #gets the number of bytes, number of files, number of folders
+    #if not session.get('logged_in'):
+        #cur = g.db.execute('select title, text from entries order by id desc')
+        #entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
+    return render_template('server_status.html')
 
+@app.route('/add_user', methods=['POST'])
+def add_user():
+    if request.method == 'POST':
+        email_entered = request.form['email']
+        password_entered = request.form['password']
+        unidentified = User.query.filter_by(email=email_entered).first()
+        exists = unidentified is None
+        """
+        syntax:
+        <Table>.query.filter_by(<field>=<data>).first()
 
+        unidentified is None
+        returns false this means the data exists in the field
+
+        if true it means unidentified does not exist in the field
+        """
+        if not exists:
+            flash('Sorry the email is already registered')
+        else:
+            new_user = User(email_entered,password_entered)
+            db.session.add(new_user)
+            db.session.commit()
+            flash('email registered')
+            """
+            syntax:
+            <variable> = <Table>(values accepted in the __init__() function)
+            db.session.add(<variable>)
+            db.session.commit()
+            """
+    return render_template('add_user.html')
 
 @app.route('/add', methods=['POST'])
 def add_entry():
@@ -66,14 +109,17 @@ def add_entry():
                  [request.form['title'], request.form['text']])
     g.db.commit()
     flash('New entry was successfully posted')
-    return redirect(url_for('show_entries'))
+    return redirect(url_for('server_status'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME']:
+        email_access = request.form['email']
+        access_user = User.query.filter_by(email=email_access).first()
+        check = access_user is None
+        if check:
             error = 'Invalid username'
         elif request.form['password'] != app.config['PASSWORD']:
             error = 'Invalid password'
@@ -88,7 +134,7 @@ def login():
 def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
-    return redirect(url_for('show_entries'))
+    return redirect(url_for('server_status'))
 
 
 if __name__ == '__main__':
