@@ -6,9 +6,11 @@ from flask import Flask
 from flaskext.sqlalchemy import SQLAlchemy
 import wombat_config.config_file
 from os.path import splitext
-from backend.functions import getType 
+from backend.functions import Base
 #initialising the flask application
 app = Flask(__name__)
+
+func = Base()
 
 #app.config.from_object(wombat_config.config_file)
 
@@ -119,7 +121,7 @@ class File(db.Model):
         self.root = root
         dummy, self.ext = splitext(name)
         self.ext = self.ext.lower()
-        self.type = unicode(getType(name))
+        self.type = unicode(func.getType(name))
 
 
 #create the database by db.create_all()
