@@ -54,13 +54,10 @@ class Base:
 		
 		
 		fileSize2 = (fileSize / (1024 * 1024) )
-		print("Total Size is {0} bytes".format(fileSize2))
+		("Total Size is {0} bytes".format(fileSize2))
 		print fileList
 		print("Total Files ", len(fileList))
 		print("Total Folders ", folderCount)
-
-
-
 
 #def check_field(data,table):
     """ 

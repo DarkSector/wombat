@@ -1,8 +1,8 @@
 body
 { 
     font-family: sans-serif;
-    background: #ddd;
-    color: #666;
+    background: #222;
+    color: #ccc;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
@@ -15,18 +15,24 @@ ul
 
 a
 {	
-	color: #666;
-	text-decoration: none;
+	color: #aaa;
+	text-decoration: underline;
 }
 
 a:hover
 {
-	text-decoration: underline;
+	text-decoration: none;
 }
 .header
 {
     overflow: hidden;
    /* border: 1px solid red;*/
+}
+
+p
+{
+    padding: none;
+    line-height: none;
 }
 
 .logo
@@ -41,12 +47,12 @@ a:hover
    font-size: 40px;
    font-family: 'trebuchet ms',arial,sans-serif;
    float: left;
-   background-color: #999;
+   background-color: #333;
    background-image: url('images/alert-overlay.png');
    background-repeat: repeat-x;
    display: inline-block;
    padding: 5px 10px 6px;
-   color: #fff;
+   color: #ddd;
    text-decoration: none;
    line-height: 1;
    -moz-border-radius: 5px;
@@ -73,7 +79,7 @@ a:hover
    background-repeat: repeat-x;
    display: block;
    padding: 4px 15px 6px;
-   color: #666;
+   color: #fff;
    text-decoration: none;
    line-height: 1;
    -moz-border-radius: 15px 15px 15px 15px;
@@ -81,14 +87,14 @@ a:hover
    cursor: pointer;
    /*-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);*/
-   text-shadow: 0 1px 1px #FFFFFF;
+   /*text-shadow: 0 1px 1px #FFFFFF;*/
    border:1px solid rgba(0, 0, 0, 0.25);
 
 }
 
 .logo span
 {
-	color: #FF6000;
+	color: #0099FF;
 
 }
 
@@ -142,4 +148,10 @@ a:hover
 .nav ul
 {
     list-style-type: none;
+}
+
+.welcome span
+{
+    font-size: 80px;
+    color: #0099ff;
 }

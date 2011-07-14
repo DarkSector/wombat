@@ -63,7 +63,7 @@ def server_status():
     #call this function before fetching any other information
     revision = svn.get_revision_no()
     #gets the revision number
-    info = func.get_info(LOCAL_REPO)
+    #info = func.get_info(LOCAL_REPO)
     #gets the number of bytes, number of files, number of folders
     #if not session.get('logged_in'):
         #cur = g.db.execute('select title, text from entries order by id desc')
@@ -101,7 +101,23 @@ def add_user():
             """
     return render_template('add_user.html')
 
-@app.route('/add', methods=['POST'])
+@app.route('/docs/know_more')
+def know_more():
+    return render_template('know_more.html')
+
+@app.route('/docs/why')
+def why():
+    return render_template('why.html')
+
+@app.route('/docs/license')
+def license():
+    return render_template('license.html')
+
+@app.route('/docs')
+def show_docs():
+    return render_template('docs.html')
+
+"""@app.route('/add', methods=['POST'])
 def add_entry():
     if not session.get('logged_in'):
         abort(401)
@@ -110,7 +126,7 @@ def add_entry():
     g.db.commit()
     flash('New entry was successfully posted')
     return redirect(url_for('server_status'))
-
+"""
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
