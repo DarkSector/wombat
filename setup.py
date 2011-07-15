@@ -1,5 +1,5 @@
 #setup the application the starting point to everything
-import wombatdb
+from backend import wombatdb
 from wombat_config.config_file import REPO_URL,LOCAL_REPO
 from backend.svnfunctions import SVNfunctions
 #Create the database
