@@ -1,6 +1,4 @@
 #author: Pronoy Chopra
-
-
 #imports
 from flask import Flask
 from flaskext.sqlalchemy import SQLAlchemy
