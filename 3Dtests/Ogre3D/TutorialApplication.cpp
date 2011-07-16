@@ -2,17 +2,6 @@
 -----------------------------------------------------------------------------
 Filename:    TutorialApplication.cpp
 -----------------------------------------------------------------------------
-
-This source file is part of the
-   ___                 __    __ _ _    _ 
-  /___\__ _ _ __ ___  / / /\ \ (_) | _(_)
- //  // _` | '__/ _ \ \ \/  \/ / | |/ / |
-/ \_// (_| | | |  __/  \  /\  /| |   <| |
-\___/ \__, |_|  \___|   \/  \/ |_|_|\_\_|
-      |___/                              
-      Tutorial Framework
-      http://www.ogre3d.org/tikiwiki/
------------------------------------------------------------------------------
 */
 #include "TutorialApplication.h"
 
@@ -26,29 +15,44 @@ TutorialApplication::~TutorialApplication(void)
 }
 
 //-------------------------------------------------------------------------------------
-void TutorialApplication::createScene(void)
+
+void TutorialApplication::createCamera(void)
+{
+    mCamera = mSceneMgr->createCamera("playercam");
+    mCamera->setPosition(200,0,0);
+    mCamera->lookAt(10,0,0);
+    mCamera->setNearClipDistance(5);
+    mCameraMan = new OgreBites::SdkCameraMan(mCamera);
+
+}
+
+void TutorialApplication::createViewport(void)
 {
 
+}
 
 
-    // create your scene here :)
-    Ogre::Entity* ogreHead = mSceneMgr->createEntity("Head", "ogrehead.mesh");
+void TutorialApplication::createScene(void)
+{
+    //create primary entity
+    Ogre::Entity* ent = mSceneMgr->createEntity("Ogrehead","ogrehead.mesh");
+    
+    //this entity is for testing only
+    //Ogre::Entity* ent2 = mSceneMgr->createEntity("Ogrehead2","ogrehead.mesh");
+    
+    //cretae node to which .mesh entity will be attached
+    Ogre::SceneNode* node = mSceneMgr->getRootSceneNode()->createChildSceneNode("Node1");
+    node->setPosition(10,0,0);
+    node->attachObject(ent);
 
-    Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(); 
-    headNode->attachObject(ogreHead);
-
-    //create another entity
-    /*
-    Ogre::Entity* eyesMesh = mSceneMgr->createEntity("Eyes","eyes.mesh");
-    Ogre::SceneNode* eyesNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-    eyesNode->attachObject(eyesMesh);
-    */
-    //set ambient light
-    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
-
-    // Create a light 
-    Ogre::Light* l = mSceneMgr->createLight("MainLight"); 
-    l->setPosition(11,80,50);
+    Ogre::SceneNode* camnode = node->createChildSceneNode("Node2",Ogre::Vector3(80,0,0));
+    //camnode->attachObject(ent2);
+    //camnode->attachObject(cam1);
+    camnode->attachObject(mCamera);
+    Ogre::Light* light = mSceneMgr->createLight("mainlight");
+    light->setDiffuseColour(Ogre::ColourValue::White);
+    light->setPosition(10,100,0);
+    mCamera->setAutoTracking(true, node);
 
 }
 
