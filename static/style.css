@@ -74,7 +74,7 @@ p
    margin: 0 auto;
    font-size: 13px;
    font-family: Helvetica,arial,sans-serif;
-   background-color: transparent;
+   background-color: #333;
    background-image: url('images/super-button-overlay.png');
    background-repeat: repeat-x;
    display: block;
@@ -155,3 +155,4 @@ p
     font-size: 80px;
     color: #0099ff;
 }
+
