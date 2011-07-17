@@ -61,7 +61,7 @@ void TutorialApplication::createScene(void)
     Ogre::Light* light = mSceneMgr->createLight("mainlight");
     light->setDiffuseColour(Ogre::ColourValue::White);
     light->setPosition(10,100,0);
-    //mCamera->setAutoTracking(true, node);
+    mCamera->setAutoTracking(true, node);
 
 }
 

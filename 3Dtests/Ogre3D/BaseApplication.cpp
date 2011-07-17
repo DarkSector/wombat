@@ -9,7 +9,12 @@ This source file is part of the
  //  // _` | '__/ _ \ \ \/  \/ / | |/ / |
 / \_// (_| | | |  __/  \  /\  /| |   <| |
 \___/ \__, |_|  \___|   \/  \/ |_|_|\_\_|
-      |___/                              
+      |___/                             bool BasicTutorial4::frameRenderingQueued(const Ogre::FrameEvent& evt) { bool ret = BaseApplication::frameRenderingQueued(evt);  if(!processUnbufferedInput(evt)) return false;  return ret; }
+It merely calls BaseApplication::frameRenderingQueued and our (yet to be written) processUnbufferedInput function and then returns to the loop. 
+In order to continue rendering the frameStarted method must return a positive boolean value. 
+If anything returns false, Ogre breaks out of the render loop and the application exits.
+
+Let's put something in the 'processUnbufferedInput' function. 
       Tutorial Framework
       http://www.ogre3d.org/tikiwiki/
 -----------------------------------------------------------------------------
@@ -48,12 +53,14 @@ BaseApplication::~BaseApplication(void)
 }
 
 //-------------------------------------------------------------------------------------
+
 bool BaseApplication::configure(void)
 {
     // Show the configuration dialog and initialise the system
     // You can skip this and use root.restoreConfig() to load configuration
-    // settings if you were sure there are valid ones saved in ogre.cfg
-    if(mRoot->showConfigDialog())
+    // settings if you were sure there are valid ones saved in ogre.cfg 
+    //if(mRoot->showConfigDialog())
+    if(mRoot->restoreConfig())
     {
         // If returned true, user clicked OK so initialise
         // Here we choose to let the system create a default rendering window by passing 'true'
@@ -65,7 +72,10 @@ bool BaseApplication::configure(void)
     {
         return false;
     }
+    
 }
+
+
 //-------------------------------------------------------------------------------------
 void BaseApplication::chooseSceneManager(void)
 {
@@ -113,8 +123,8 @@ void BaseApplication::createFrameListener(void)
     Ogre::WindowEventUtilities::addWindowEventListener(mWindow, this);
 
     mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName", mWindow, mMouse, this);
-    mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-    mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
+    //mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
+    //mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
     mTrayMgr->hideCursor();
 
     // create a params panel for displaying sample details
