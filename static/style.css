@@ -14,9 +14,9 @@ ul
 
 
 a
-{	
-	color: #aaa;
-	text-decoration: underline;
+{
+    color: #aaa;
+    text-decoration: underline;
 }
 
 a:hover
@@ -156,3 +156,18 @@ p
     color: #0099ff;
 }
 
+.know_more
+{
+    font-size: 20px;
+    color: #0099ff;
+}
+
+.login-form
+{
+    border: 1px solid #ccc;
+    -border-radius: 20px;
+    -moz-border-radius: 20px;
+    background-image: url('images/input-bg.png');
+    padding: 2px;
+    color: #000;
+}
