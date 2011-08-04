@@ -1,6 +1,6 @@
 #important functions
 import os
-
+from wombat_config.config_file import DATABASE
 img_inline = ['.gif', '.jpg', '.png']
 image_exts = ['.bmp', '.gif', '.ico', '.jpg', '.png', '.psd',
         '.psp','.pspimage', '.psptube', '.raw', '.svg', '.tga', '.tif', '.xcf']
@@ -55,7 +55,7 @@ class Base:
 		
 		fileSize2 = (fileSize / (1024 * 1024) )
 		("Total Size is {0} bytes".format(fileSize2))
-		print fileList
+		#print fileList
 		print("Total Files ", len(fileList))
 		print("Total Folders ", folderCount)
 
@@ -65,3 +65,6 @@ class Base:
     Good for checking if username or email exists
     """
 #    data = User.query.filter_by(data=)
+
+
+#print DATABASE
