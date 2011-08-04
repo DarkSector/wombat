@@ -9,16 +9,32 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
     <a href="{{ url_for('why') }}"><li>Why was this thing created?</li></a>
     <a href="{{ url_for('license') }}"><li>Woah! hold on, this looks fishy. Where do I find its source code?</li></a>
 </ul>
-{#{% block server_status %}
+{#{% block server_status %}#}
 
-    <ul class="server">
-    {% for status in statuses %}
-    <li><strong>{{ status.title }}</strong>{{ status.}}</li>
-    {% endfor %}
 
-    </ul>
-    {% endblock%}
-    #}
+    <table border="0.3">
+    <tr>
+    <td><strong>Repository URL</strong></td>
+    <td>{{ serverdict['url_out'] }}</td>
+    </tr>
+    <tr>
+    <td>Revision</td>
+    <td>{{ serverdict['revision'] }}</td>
+    </tr>
+    <tr>
+    <td>Size</td>
+    <td>{{ serverdict['revision'] }}</td>
+    </tr>
+    <tr>
+    <td>Revision</td>
+    <td>{{ serverdict['revision'] }}</td>
+    </tr>
+
+
+    </table>
+    
+    
+    {% endblock%}#}
   {#{% if session.logged_in %}
     <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
       <dl>
@@ -30,13 +46,11 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
       </dl>
     </form>
 
-  {% endif %}
-  #}
-  {% endblock %}
-  {% block navigation %}
+  
+  {#{% block navigation %}
   <ul>
       {% for nav in navs %}
       <li><a href=" {{ nav.link  }} ">{{ nav.title }}</a></li>
       {% endfor  %}
   </ul>
-{% endblock %}
+{% endblock %}#}

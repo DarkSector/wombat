@@ -92,7 +92,8 @@ def server_status():
     #fileCount = 'foo'
     #fileSize = 'foo'
     #fileListLen = 'foo'
-    return render_template('server_status.html')
+    serverdict = dict(url_out=url_out,revision=revision)
+    return render_template('server_status.html',serverdict=serverdict)
 
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
