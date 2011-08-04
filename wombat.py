@@ -84,15 +84,12 @@ def server_status():
         #call this function before fetching any other information
     revision = svn.get_revision_no()
         #gets the revision number
-        #info = func.get_info(LOCAL_REPO)
-        #gets the number of bytes(size), number of files, number of folders
-    #if not session.get('logged_in'):
-        #cur = g.db.execute('select title, text from entries order by id desc')
-        #entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
-    #fileCount = 'foo'
-    #fileSize = 'foo'
-    #fileListLen = 'foo'
-    serverdict = dict(url_out=url_out,revision=revision)
+    
+    fileSize,fileLength,folderCount = func.get_info(LOCAL_REPO)
+    fileSize = func.convert_bytes(fileSize)
+    serverdict = dict(url_out=url_out,revision=revision,fileSize=fileSize, \
+        fileLength=fileLength,folderCount=folderCount) 
+    
     return render_template('server_status.html',serverdict=serverdict)
 
 @app.route('/add_user', methods=['GET', 'POST'])
