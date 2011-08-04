@@ -2,7 +2,7 @@
 {% block body %}
 <p class="welcome"><span>hello,</span></p>
 <p>Welcome to Wombat. Wombat is an Asset Management System created to provide an easier user interface to an svn repository. It's created using
-flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">register yourself</a> with Wombat and explore its cool features. If you've already registered try<a href="{{url_for('login')}}"> logging in here</a></p>
+flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">register yourself</a> with Wombat and explore its cool features. If you've already registered try<a href="{{ url_for('login') }}"> logging in here</a></p>
 <ul>
     <a href="{{ url_for('add_user') }}"><li>Great! I am sold, where do I register?</li></a>
     <a href="{{ url_for('know_more') }}"><li>No wait, wombat is a what?<li></a>
@@ -19,7 +19,7 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
     </ul>
     {% endblock%}
     #}
-  {% if session.logged_in %}
+  {#{% if session.logged_in %}
     <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
       <dl>
         <dt>Title:
@@ -31,13 +31,7 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
     </form>
 
   {% endif %}
-  <ul class=entries>
-  {% for entry in entries %}
-    <li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}
-  {% else %}
-    <li><em>Unbelievable.  No entries here so far</em>
-  {% endfor %}
-  </ul>
+  #}
   {% endblock %}
   {% block navigation %}
   <ul>
@@ -45,7 +39,4 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
       <li><a href=" {{ nav.link  }} ">{{ nav.title }}</a></li>
       {% endfor  %}
   </ul>
-
-
-  {% endblock %}
-
+{% endblock %}

@@ -10,6 +10,7 @@
     :Project: Worldforge
     :program: GSoC 2011
     :Mentor : Kai Blin
+            
 """
 from __future__ import with_statement
 from sqlite3 import dbapi2 as sqlite3
@@ -22,12 +23,30 @@ from wombatdb import db
 from wombatdb import User
 from backend.svnfunctions import SVNfunctions
 from backend.functions import Base
+from flaskext.login import LoginManager
 # create our little application :)
+
+
+
+
 app = Flask(__name__)
 app.config.from_object(config_file)
 
+
+
+login_manager = LoginManager()
+#login_manager = setup_app(app)
+
 func = Base()
 svn = SVNfunctions()
+
+
+
+@login_manager.user_loader
+def load_user(userid):
+        return User.get(userid)
+
+
 
 def connect_db():
     """Returns a new connection to the database."""
@@ -57,20 +76,25 @@ def after_request(response):
 
 @app.route('/')
 def server_status():
+    #The repository information belongs to the updated copy of a 
+    #checked out version on the local system
     url_out = svn.get_url()
-    #returns the URL of the local repository
+        #returns the URL of the local repository
     svn.update_copy()
-    #call this function before fetching any other information
+        #call this function before fetching any other information
     revision = svn.get_revision_no()
-    #gets the revision number
-    #info = func.get_info(LOCAL_REPO)
-    #gets the number of bytes, number of files, number of folders
+        #gets the revision number
+        #info = func.get_info(LOCAL_REPO)
+        #gets the number of bytes(size), number of files, number of folders
     #if not session.get('logged_in'):
         #cur = g.db.execute('select title, text from entries order by id desc')
         #entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
+    #fileCount = 'foo'
+    #fileSize = 'foo'
+    #fileListLen = 'foo'
     return render_template('server_status.html')
 
-@app.route('/add_user', methods=['POST'])
+@app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
     if request.method == 'POST':
         email_entered = request.form['email']
@@ -117,7 +141,8 @@ def license():
 def show_docs():
     return render_template('docs.html')
 
-"""@app.route('/add', methods=['POST'])
+"""
+@app.route('/add', methods=['POST'])
 def add_entry():
     if not session.get('logged_in'):
         abort(401)

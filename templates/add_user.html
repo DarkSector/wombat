@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Register A New User</h2>
+  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+  <form action="{{ url_for('add_user') }}" method=post>
+    <dl>
+      <dt>Email*:
+      <dd><input class=login-form type=text name=email>
+      <dt>Password*:
+      <dd><input class=login-form type=password name=password>
+      <dt><p></p>
+      <dd><input type=submit value="Sign me up!">
+    </dl>
+    <i>Fields marked with * are mandatory</i>
+    <dl>
+      
+      <dt>Additional Info:
+      <dt><p></p>
+      <dt>First name:
+      <dd><input class=login-form type=text name=first-name>
+      <dt>Last name:
+      <dd><input class=login-form type=text name=last-name>
+      <dt>Nickname:
+      <dd><input class=login-form type=text name=nick>
+      <dt>VCS Username:
+      <dd><input class=login-form type=text name=vcs-username>
+      <dt>VCS Password:
+      <dd><input class=login-form type=text name=vcs-password>
+      <dt>User ID:
+      <dd><input class=login-form type=text name=user-id>
+    </dl>
+    
+  </form>
+{% endblock %}
