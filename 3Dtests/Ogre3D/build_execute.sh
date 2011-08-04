@@ -1,5 +1,5 @@
 #!/bin/bash
-
+rm dist/bin/*.png
 cd ~/Ogre3D
 make
 cp OgreApp dist/bin/OgreApp
