@@ -23,13 +23,16 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
     </tr>
     <tr>
     <td>Size</td>
-    <td>{{ serverdict['revision'] }}</td>
+    <td>{{ serverdict['fileSize'] }}</td>
     </tr>
     <tr>
-    <td>Revision</td>
-    <td>{{ serverdict['revision'] }}</td>
+    <td>Number of files</td>
+    <td>{{ serverdict['fileLength'] }}</td>
     </tr>
-
+    <tr>
+    <td>Number of folders</td>
+    <td>{{ serverdict['folderCount'] }}</td>
+    </tr>
 
     </table>
     
