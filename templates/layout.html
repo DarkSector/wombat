@@ -1,12 +1,12 @@
 <!doctype html>
 <html>
     <head>
-<title>Wombat</title>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+      <title>Wombat</title>
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
         
-    <div class="header">
+      <div class="header">
         <div class="logo">
             <a href="{{ url_for('server_status') }}"><p>W<span>o</span>mbat</p></a>
         </div>
@@ -35,8 +35,21 @@
                 {% endfor %}
                 {% block body %}{% endblock %}
                 
+                {% block welcome%}{% endblock %}
+                
+                {% block server_status %}{% endblock %}
+                
             </div>
 
+        
+        <div class=footer>
+        <ul>
+         <a href="{{ url_for('add_user') }}"><li>Register</li></a>
+         <a href="{{ url_for('know_more') }}"><li>Know More<li></a>
+         <a href="{{ url_for('why') }}"><li>Why?</li></a>
+         <a href="{{ url_for('license') }}"><li>Licensing</li></a>
+        </ul>
+        </div>
         </div>
 
 </body>
