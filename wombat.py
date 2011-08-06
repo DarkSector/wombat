@@ -18,7 +18,7 @@ from sqlite3 import dbapi2 as sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
 from wombat_config import config_file
-from wombat_config.config_file import LOCAL_REPO
+from wombat_config.config_file import LOCAL_REPO, FIRST_VIEW
 from wombatdb import db
 from wombatdb import User
 from backend.svnfunctions import SVNfunctions
@@ -79,7 +79,7 @@ def server_status():
     #The repository information belongs to the updated copy of a 
     #checked out version on the local system
     url_out = svn.get_url()
-        #returns the URL of the local repository
+        #returns the URL of the repository not the checked out version
     svn.update_copy()
         #call this function before fetching any other information
     revision = svn.get_revision_no()
@@ -88,7 +88,7 @@ def server_status():
     fileSize,fileLength,folderCount = func.get_info(LOCAL_REPO)
     fileSize = func.convert_bytes(fileSize)
     serverdict = dict(url_out=url_out,revision=revision,fileSize=fileSize, \
-        fileLength=fileLength,folderCount=folderCount) 
+        fileLength=fileLength,folderCount=folderCount,first_view=FIRST_VIEW) 
     
     return render_template('server_status.html',serverdict=serverdict)
 
@@ -167,6 +167,11 @@ def login():
             flash('You were logged in')
             return redirect(url_for('show_entries'))
     return render_template('login.html', error=error)
+    
+    
+#@app.route('/settings')
+#def settings():
+#        if session.logged
 
 
 @app.route('/logout')
