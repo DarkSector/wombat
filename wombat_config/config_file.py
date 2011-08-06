@@ -23,3 +23,6 @@ DATABASE = 'wombatDatabase.db'
 #repository url default host: localhost
 REPO_URL = 'http://localhost/svn/dummy'
 LOCAL_REPO = wd +'/repository'
+
+#first time users
+FIRST_VIEW= False

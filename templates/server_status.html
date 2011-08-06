@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
-{% block body %}
+
+
+{% block welcome %}
+{% if serverdict['first_view'] %}
 <p class="welcome"><span>hello,</span></p>
 <p>Welcome to Wombat. Wombat is an Asset Management System created to provide an easier user interface to an svn repository. It's created using
 flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">register yourself</a> with Wombat and explore its cool features. If you've already registered try<a href="{{ url_for('login') }}"> logging in here</a></p>
@@ -9,36 +12,41 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
     <a href="{{ url_for('why') }}"><li>Why was this thing created?</li></a>
     <a href="{{ url_for('license') }}"><li>Woah! hold on, this looks fishy. Where do I find its source code?</li></a>
 </ul>
-{#{% block server_status %}#}
+{% endif %}
+{% endblock %}
 
 
-    <table border="0.3">
+{% block server_status %}
+
+    <div class=serverstatus>
+    <h3>Server Status:</h3>
+    <table>
     <tr>
     <td><strong>Repository URL</strong></td>
-    <td>{{ serverdict['url_out'] }}</td>
+    <td class=serverinfo>{{ serverdict['url_out'] }}</td>
     </tr>
     <tr>
     <td>Revision</td>
-    <td>{{ serverdict['revision'] }}</td>
+    <td class=serverinfo>{{ serverdict['revision'] }}</td>
     </tr>
     <tr>
     <td>Size</td>
-    <td>{{ serverdict['fileSize'] }}</td>
+    <td class=serverinfo>{{ serverdict['fileSize'] }}</td>
     </tr>
     <tr>
     <td>Number of files</td>
-    <td>{{ serverdict['fileLength'] }}</td>
+    <td class=serverinfo>{{ serverdict['fileLength'] }}</td>
     </tr>
     <tr>
     <td>Number of folders</td>
-    <td>{{ serverdict['folderCount'] }}</td>
+    <td class=serverinfo>{{ serverdict['folderCount'] }}</td>
     </tr>
 
     </table>
-    
-    
-    {% endblock%}#}
-  {#{% if session.logged_in %}
+    </div>
+{% endblock %}
+
+
     <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
       <dl>
         <dt>Title:
@@ -50,10 +58,10 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
     </form>
 
   
-  {#{% block navigation %}
+  {% block navigation %}
   <ul>
       {% for nav in navs %}
       <li><a href=" {{ nav.link  }} ">{{ nav.title }}</a></li>
       {% endfor  %}
   </ul>
-{% endblock %}#}
+{% endblock %}

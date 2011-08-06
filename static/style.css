@@ -112,6 +112,7 @@ p
     float: right;
     width: 750px;
     overflow: hidden;
+    min-height: 400px;
 }
 
 .admin
@@ -170,4 +171,28 @@ p
     background-image: url('images/input-bg.png');
     padding: 2px;
     color: #000;
+}
+
+.serverinfo
+{
+     
+    padding-left: 50px;
+  
+}
+
+.footer
+{
+    overflow: hidden;
+
+}
+.footer ul
+{
+    list-style-type: none;
+}
+
+.footer li
+{
+    display: inline;
+    padding-left: 40px;
+    
 }
