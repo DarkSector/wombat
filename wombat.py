@@ -24,6 +24,7 @@ from wombatdb import User
 from backend.svnfunctions import SVNfunctions
 from backend.functions import Base
 from flaskext.login import LoginManager
+import local_functions
 # create our little application :)
 
 
