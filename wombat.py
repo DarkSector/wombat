@@ -23,8 +23,10 @@ from wombatdb import db
 from wombatdb import User
 from backend.svnfunctions import SVNfunctions
 from backend.functions import Base
-from flaskext.login import LoginManager
-import local_functions
+#from flaskext.login import LoginManager
+#from  local_functions import LocalFunctions
+from flaskext.bcrypt import bcrypt_init, generate_password_hash, \
+    check_password_hash
 # create our little application :)
 
 
@@ -33,19 +35,20 @@ import local_functions
 app = Flask(__name__)
 app.config.from_object(config_file)
 
+bcrypt_init(app)
 
 
-login_manager = LoginManager()
+#login_manager = LoginManager()
 #login_manager = setup_app(app)
 
 func = Base()
 svn = SVNfunctions()
+#local = LocalFunctions()
 
 
-
-@login_manager.user_loader
-def load_user(userid):
-        return User.get(userid)
+#@login_manager.user_loader
+#def load_user(userid):
+#        return User.get(userid)
 
 
 
@@ -88,8 +91,8 @@ def server_status():
     
     fileSize,fileLength,folderCount = func.get_info(LOCAL_REPO)
     fileSize = func.convert_bytes(fileSize)
-    serverdict = dict(url_out=url_out,revision=revision,fileSize=fileSize, \
-        fileLength=fileLength,folderCount=folderCount,first_view=FIRST_VIEW) 
+    serverdict = (dict(url_out=url_out,revision=revision,fileSize=fileSize, \
+        fileLength=fileLength,folderCount=folderCount,first_view=FIRST_VIEW)) 
     
     return render_template('server_status.html',serverdict=serverdict)
 
@@ -112,7 +115,8 @@ def add_user():
         if not exists:
             flash('Sorry the email is already registered')
         else:
-            new_user = User(email_entered,password_entered)
+            pw_hash = generate_password_hash(password_entered)
+            new_user = User(email_entered,pw_hash)
             db.session.add(new_user)
             db.session.commit()
             flash('email registered')
@@ -157,16 +161,17 @@ def login():
     error = None
     if request.method == 'POST':
         email_access = request.form['email']
+        password_access = request.form['password']
         access_user = User.query.filter_by(email=email_access).first()
         check = access_user is None
         if check:
             error = 'Invalid username'
-        elif request.form['password'] != app.config['PASSWORD']:
+        elif not (check_password_hash(access_user.password,password_access)):
             error = 'Invalid password'
         else:
             session['logged_in'] = True
             flash('You were logged in')
-            return redirect(url_for('show_entries'))
+            return redirect(url_for('server_status'))
     return render_template('login.html', error=error)
     
     
