@@ -22,7 +22,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 from wombat_config import config_file
 from wombat_config.config_file import LOCAL_REPO, FIRST_VIEW
 from wombatdb import db
-from wombatdb import User
+from wombatdb import User,UserData
 from backend.svnfunctions import SVNfunctions
 from backend.functions import Base
 
@@ -113,6 +113,7 @@ def add_user():
         name = first_name + ' ' + last_name
         nick = request.form['nick']
         vcs_user = request.form['vcs-username']
+        
         vcs_pass = request.form['vcs-password']
         #user_id = request.form['user-id']
         #email and password from the form
@@ -138,7 +139,11 @@ def add_user():
             pw_hash = generate_password_hash(password_entered)
             #hash the password entered into the form
             
-            vcspw_hash = generate_password_hash(vcs_pass)
+            if not len(vcs_pass) == 0:
+                vcspw_hash = generate_password_hash(vcs_pass)
+            else:
+                vcspw_hash = None
+            
             #hash the vcs password entered into the form
             new_user = User(email_entered,pw_hash)
             #enter the information into the databse
@@ -146,6 +151,9 @@ def add_user():
             db.session.add(new_user)
             db.session.commit()   
             #commit the change to User 
+            
+
+                
             
             new_user_data = UserData(name,nick,vcs_user,vcspw_hash)
             db.session.add(new_user_data)
