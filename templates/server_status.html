@@ -57,11 +57,14 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
       </dl>
     </form>
 
+
   
   {% block navigation %}
+  {% if session.logged_in %}
   <ul>
-      {% for nav in navs %}
-      <li><a href=" {{ nav.link  }} ">{{ nav.title }}</a></li>
-      {% endfor  %}
+      
+      <li><a href=" {{ url_for('settings') }} ">Settings</a></li>
+      
   </ul>
+  {% endif %}
 {% endblock %}
