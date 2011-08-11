@@ -1,4 +1,4 @@
 #ignore following files:
 
-.pyc
+*.pyc
 wombatDatabase.db
