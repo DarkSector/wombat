@@ -21,6 +21,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = wombat_config.config_file.DB_URI
 db = SQLAlchemy(app)
 
 #Define models here:
+
+class WorkSpaces(db.Model):
+    __tablename__ = 'workspaces'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), default=u'Unnamed Workspace')
+
 class Collection(db.Model):
     __tablename__ = 'collections'
     id = db.Column(db.Integer, primary_key=True)
