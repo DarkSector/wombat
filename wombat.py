@@ -151,10 +151,7 @@ def add_user():
             db.session.add(new_user)
             db.session.commit()   
             #commit the change to User 
-            
-
-                
-            
+                      
             new_user_data = UserData(name,nick,vcs_user,vcspw_hash)
             db.session.add(new_user_data)
             db.session.commit()
@@ -218,9 +215,10 @@ def login():
     return render_template('login.html', error=error)
     
     
-#@app.route('/settings')
-#def settings():
-#        if session.logged
+@app.route('/settings')
+def settings():
+    pass
+
 
 
 @app.route('/logout')
