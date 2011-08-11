@@ -26,3 +26,6 @@ LOCAL_REPO = wd +'/repository'
 
 #first time users
 FIRST_VIEW= False
+
+#construction flag
+CONSTRUCTION = True
