@@ -12,6 +12,8 @@
     :Mentor : Kai Blin
             
 """
+
+#bunch of imports
 from __future__ import with_statement
 from sqlite3 import dbapi2 as sqlite3
 #from contextlib import closing
@@ -23,33 +25,25 @@ from wombatdb import db
 from wombatdb import User
 from backend.svnfunctions import SVNfunctions
 from backend.functions import Base
-#from flaskext.login import LoginManager
-#from  local_functions import LocalFunctions
+
 from flaskext.bcrypt import bcrypt_init, generate_password_hash, \
     check_password_hash
-# create our little application :)
 
 
 
-
+# create our  application :)
 app = Flask(__name__)
 app.config.from_object(config_file)
+# take the configuration from the config file
 
+
+#use py-bcrypt for hashing password
 bcrypt_init(app)
 
 
-#login_manager = LoginManager()
-#login_manager = setup_app(app)
-
+#all functions need to have to be imported from Base class or SVNfunctions() class
 func = Base()
 svn = SVNfunctions()
-#local = LocalFunctions()
-
-
-#@login_manager.user_loader
-#def load_user(userid):
-#        return User.get(userid)
-
 
 
 def connect_db():
@@ -58,6 +52,7 @@ def connect_db():
 
 """
 #Use the following only for non SQLAlchemy based system
+
 def init_db():
     #Creates the database tables.
     with closing(connect_db()) as db:
@@ -65,6 +60,8 @@ def init_db():
             db.cursor().executescript(f.read())
         db.commit()
 """
+
+
 
 @app.before_request
 def before_request():
@@ -78,6 +75,9 @@ def after_request(response):
     g.db.close()
     return response
 
+
+
+
 @app.route('/')
 def server_status():
     #The repository information belongs to the updated copy of a 
@@ -90,19 +90,37 @@ def server_status():
         #gets the revision number
     
     fileSize,fileLength,folderCount = func.get_info(LOCAL_REPO)
+    #unfurl a touple 
+    
     fileSize = func.convert_bytes(fileSize)
+    #convert fileSize in human readable form
+    
     serverdict = (dict(url_out=url_out,revision=revision,fileSize=fileSize, \
         fileLength=fileLength,folderCount=folderCount,first_view=FIRST_VIEW)) 
-    
+    #create a dict out of the information that needs to be passed to the template
+
     return render_template('server_status.html',serverdict=serverdict)
+    #pass serverdict as the context
+    
 
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
     if request.method == 'POST':
         email_entered = request.form['email']
         password_entered = request.form['password']
+        first_name = request.form['first-name']
+        last_name = request.form['last-name']
+        name = first_name + ' ' + last_name
+        nick = request.form['nick']
+        vcs_user = request.form['vcs-username']
+        vcs_pass = request.form['vcs-password']
+        #user_id = request.form['user-id']
+        #email and password from the form
+        
         unidentified = User.query.filter_by(email=email_entered).first()
         exists = unidentified is None
+        #check whether the user exists in the database
+        
         """
         syntax:
         <Table>.query.filter_by(<field>=<data>).first()
@@ -112,20 +130,37 @@ def add_user():
 
         if true it means unidentified does not exist in the field
         """
+        
         if not exists:
             flash('Sorry the email is already registered')
+        
         else:
             pw_hash = generate_password_hash(password_entered)
+            #hash the password entered into the form
+            
+            vcspw_hash = generate_password_hash(vcs_pass)
+            #hash the vcs password entered into the form
             new_user = User(email_entered,pw_hash)
+            #enter the information into the databse
+            
             db.session.add(new_user)
+            db.session.commit()   
+            #commit the change to User 
+            
+            new_user_data = UserData(name,nick,vcs_user,vcspw_hash)
+            db.session.add(new_user_data)
             db.session.commit()
+            
             flash('email registered')
+            
             """
             syntax:
             <variable> = <Table>(values accepted in the __init__() function)
             db.session.add(<variable>)
             db.session.commit()
             """
+            
+            
     return render_template('add_user.html')
 
 @app.route('/docs/know_more')
