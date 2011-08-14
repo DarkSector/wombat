@@ -4,13 +4,23 @@ Filename:    TutorialApplication.cpp
 -----------------------------------------------------------------------------
 */
 #include "TutorialApplication.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 //-------------------------------------------------------------------------------------
-TutorialApplication::TutorialApplication(void)
+TutorialApplication::TutorialApplication(char *i, char *o)
 {
 	currentAngle = 10;
 	accumulatedTime = 0;
 	imagecount = 0;
+	inputfile = i;
+	outputfolder = o;
+	
+	printf("inputfile: %s \n outputfolder: %s", inputfile,outputfolder);
+
+	
+	
 }
 //-------------------------------------------------------------------------------------
 TutorialApplication::~TutorialApplication(void)
@@ -40,7 +50,7 @@ void TutorialApplication::createViewport(void)
 void TutorialApplication::createScene(void)
 {
     //create primary entity
-    ent = mSceneMgr->createEntity("Ogrehead","ogrehead.mesh");
+    ent = mSceneMgr->createEntity("foo",inputfile);
     
     //this entity is for testing only
     //Ogre::Entity* ent2 = mSceneMgr->createEntity("Ogrehead2","ogrehead.mesh");
@@ -97,7 +107,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	    
 	    glPixelStorei(GL_PACK_ALIGNMENT,1);
 	    
-	    sprintf(filename,"file-%d.png", imagecount);
+	    sprintf(filename,"%s/file-%d.png", outputfolder, imagecount);
 	    imagecount++;
 	    mWindow->writeContentsToFile(filename);
 	    printf("%s\n",filename);
@@ -130,8 +140,30 @@ extern "C" {
 #endif
     {
         // Create application object
-        TutorialApplication app;
-
+        
+        
+        if (argc !=3)
+        {
+            printf("Usage: %s [input] [output] \n\n", argv[0]);
+            exit(0);
+        }
+        
+        struct stat buf;
+        int ret;
+        printf("Checking if output path exists...\n");
+        ret = stat(argv[2],&buf);
+        //printf("%d %d\n", ret, buf.st_mtime);
+        if (ret== -1)
+        {
+            printf("Path does not exist: %s \nCowardly refusing to run the program \n", argv[2]);
+            exit(0);
+        }
+        
+        
+        
+        TutorialApplication app(argv[1],argv[2]);
+        
+        
         try {
             app.go();
         } catch( Ogre::Exception& e ) {

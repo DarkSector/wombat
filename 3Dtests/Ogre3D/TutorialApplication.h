@@ -11,10 +11,11 @@ Filename:    TutorialApplication.h
 #include "GL/gl.h"
 #include "stdio.h"
 
+
 class TutorialApplication : public BaseApplication
 {
 public:
-    TutorialApplication(void);
+    TutorialApplication(char *i, char *o);
     virtual ~TutorialApplication(void);
     
 protected:
@@ -26,6 +27,8 @@ protected:
     bool mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id ) {};
     bool mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id ) {};
     
+    char *inputfile;
+    char *outputfolder;
     
     //virtual void writeContentsToFile(const String & filename);
     bool frameRenderingQueued(const Ogre::FrameEvent& evt);
