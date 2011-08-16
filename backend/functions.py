@@ -83,13 +83,4 @@ class Base (object):
             else:
                     size = '%.2fb' % bytes
             return size
-            
-#def check_field(data,table):
-    """ 
-    Returns a boolean value after checking if data is present in the mentioned table
-    Good for checking if username or email exists
-    """
-#    data = User.query.filter_by(data=)
 
-
-#print DATABASE
