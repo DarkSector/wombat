@@ -183,6 +183,13 @@ p
 .footer
 {
     overflow: hidden;
+    margin-left: 400px;
+
+}
+
+.footer a 
+{
+    text-decoration: none;
 
 }
 .footer ul
