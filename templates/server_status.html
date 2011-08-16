@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 
-
 {% block welcome %}
 {% if serverdict['first_view'] %}
 <p class="welcome"><span>hello,</span></p>
@@ -45,18 +44,6 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
     </table>
     </div>
 {% endblock %}
-
-
-    <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
-      <dl>
-        <dt>Title:
-        <dd><input type=text size=30 name=title>
-        <dt>Text:
-        <dd><textarea name=text rows=5 cols=40></textarea>
-        <dd><input type=submit value=Share>
-      </dl>
-    </form>
-
 
   
   {% block navigation %}
