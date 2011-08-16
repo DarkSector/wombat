@@ -5,14 +5,19 @@
 
     An Asset Managment System written using Flask with SQLAlchemy
     
+    Extensions used:
+        Flask-SQLAlchemy
+        Flask-WTF
+        Flask-Uploads
+        Flask-Mail    
 
-    :Author: Pronoy Chopra
+    :Author : Pronoy Chopra
     :Project: Worldforge
     :program: GSoC 2011
     :Mentor : Kai Blin
             
 """
-
+#-----------------------------imports-------------------------------------------
 #bunch of imports
 from __future__ import with_statement
 from sqlite3 import dbapi2 as sqlite3
@@ -22,45 +27,106 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 from wombat_config import config_file
 from wombat_config.config_file import LOCAL_REPO, FIRST_VIEW
 from wombatdb import db
-from wombatdb import User,UserData
+from wombatdb import User, UserData
 from backend.svnfunctions import SVNfunctions
 from backend.functions import Base
-
 from flaskext.bcrypt import bcrypt_init, generate_password_hash, \
     check_password_hash
+from flaskext.wtf import Form, TextField, TextAreaField, PasswordField, \
+    SubmitField, Required, ValidationError, validators
 
-
+#-------------------------------------------------------------------------------
 
 # create our  application :)
 app = Flask(__name__)
-app.config.from_object(config_file)
+
 # take the configuration from the config file
+app.config.from_object(config_file)
 
 
 #use py-bcrypt for hashing password
 bcrypt_init(app)
 
 
+
 #all functions need to have to be imported from Base class or SVNfunctions() class
 func = Base()
 svn = SVNfunctions()
+
+#-----------------------All forms are defined here------------------------------
+
+class LoginForm (Form):
+    
+    
+    username = TextField("Email")
+    password = PasswordField("Password")
+    submit = SubmitField("Login")
+    
+    
+    def validate_username(self,username):
+        access_user = User.query.filter_by(email = username.data).first()
+        if access_user is None:
+            raise ValidationError, "Invalid Username"
+
+
+    def validate_password(self,password):
+        access_user = User.query.filter_by(email = self.username.data).first()
+        if access_user is None:
+            raise ValidationError, "Invalid Username"
+        else:
+            condition = check_password_hash(access_user.password, password.data)
+        if not condition:
+            raise ValidationError, "Invalid Password"
+
+
+#this is the registeration form
+class RegisterationForm (Form):
+        
+    #email field: Mandatory
+    email = TextField("Email Address", [validators.Length(min=6)])
+    
+    #password field: Mandatory
+    password = PasswordField("New Password", [
+        validators.Required(),
+        validators.EqualTo('confirm', message='Passwords must match')
+    ])
+    
+    #confirm password field: Mandatory
+    confirm = PasswordField('Repeat Password')
+    
+    #generate hash of password
+    if confirm == password:
+        password = generate_password(password)
+    
+    #name of the user: Non Mandatory
+    Name = TextField("Your full name")
+    
+    #nick name of the user: Non Mandatory
+    Nickname = TextField("Your nick name")
+    
+    #vcs_username of the user: Non Mandatory
+    VCS_Username = TextField("Your VCS Username")
+    
+    #vcs_password of the user: Non mandatory
+    VCS_Password = PasswordField("Your VCS Password")
+    
+    VCS_Password = generate_password_hash(VCS_Password)
+    
+    #querying for known entries for the given email
+
+    
+    def validate_username(self,email):
+        unidentified = User.query.filter_by(email=email.data).first()
+        if unidentified is not None:
+            raise ValidateError, "Username already exists"
+
+
+#-----------------------------database related actions--------------------------
 
 
 def connect_db():
     """Returns a new connection to the database."""
     return sqlite3.connect(app.config['DATABASE'])
-
-"""
-#Use the following only for non SQLAlchemy based system
-
-def init_db():
-    #Creates the database tables.
-    with closing(connect_db()) as db:
-        with app.open_resource('schema.sql') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
-"""
-
 
 
 @app.before_request
@@ -75,9 +141,9 @@ def after_request(response):
     g.db.close()
     return response
 
+#----------------------------decorators start here------------------------------
 
-
-
+#index page
 @app.route('/')
 def server_status():
     #The repository information belongs to the updated copy of a 
@@ -102,71 +168,58 @@ def server_status():
     return render_template('server_status.html',serverdict=serverdict)
     #pass serverdict as the context
     
-
-@app.route('/add_user', methods=['GET', 'POST'])
+    
+    
+#add a new user 
+@app.route('/register', methods=['GET', 'POST'])
 def add_user():
-    if request.method == 'POST':
-        email_entered = request.form['email']
-        password_entered = request.form['password']
-        first_name = request.form['first-name']
-        last_name = request.form['last-name']
-        name = first_name + ' ' + last_name
-        nick = request.form['nick']
-        vcs_user = request.form['vcs-username']
+    
+    #render registeration form
+    form = RegisterationForm(request.form)
+    
+    #if posted and email is non empty and password is non empty
+    if request.method == 'POST' and form.validate():
+        new_user = User(form.email.data,form.password.data)
+        db.session.add(new_user)
+        db.session.commit()
         
-        vcs_pass = request.form['vcs-password']
-        #user_id = request.form['user-id']
-        #email and password from the form
+        new_user_data = UserData(form.Name.data, form.Nickname.data, \
+            form.VCS_Username.data,form.VCS_Password.data)
         
-        unidentified = User.query.filter_by(email=email_entered).first()
-        exists = unidentified is None
-        #check whether the user exists in the database
+        #NOTE: The Password and the VCS_Password are already hashed when obtaining
+        #      the said values from the form
+        #      refer the RegisterationForm class.
         
-        """
-        syntax:
-        <Table>.query.filter_by(<field>=<data>).first()
-
-        unidentified is None
-        returns false this means the data exists in the field
-
-        if true it means unidentified does not exist in the field
-        """
-        
-        if not exists:
-            flash('Sorry the email is already registered')
-        
-        else:
-            pw_hash = generate_password_hash(password_entered)
-            #hash the password entered into the form
-            
-            if not len(vcs_pass) == 0:
-                vcspw_hash = generate_password_hash(vcs_pass)
-            else:
-                vcspw_hash = None
-            
-            #hash the vcs password entered into the form
-            new_user = User(email_entered,pw_hash)
-            #enter the information into the databse
-            
-            db.session.add(new_user)
-            db.session.commit()   
-            #commit the change to User 
-                      
-            new_user_data = UserData(name,nick,vcs_user,vcspw_hash)
-            db.session.add(new_user_data)
-            db.session.commit()
-            
-            flash('email registered')
-            
-            """
-            syntax:
-            <variable> = <Table>(values accepted in the __init__() function)
-            db.session.add(<variable>)
-            db.session.commit()
-            """
-            
-            
+        db.session.add(new_user_data)
+        db.session.commit()
+                    
     return render_template('add_user.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login(): 
+    form = LoginForm(request.form)
+    if form.validate_on_submit():
+        session['logged_in'] = True
+        session['username'] = form.username.data
+        if session['login']:
+            flash('You were logged in '+ session['username'])
+        else:
+            flash('you were not logged in')
+        return redirect(url_for('server_status'))
+    return render_template('login.html', form=form)
+
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('server_status'))
+
+
+#---------------------not so important functions--------------------------------
+
+@app.route('/settings')
+def settings():
+    pass
 
 @app.route('/docs/know_more')
 def know_more():
@@ -184,48 +237,6 @@ def license():
 def show_docs():
     return render_template('docs.html')
 
-"""
-@app.route('/add', methods=['POST'])
-def add_entry():
-    if not session.get('logged_in'):
-        abort(401)
-    g.db.execute('insert into entries (title, text) values (?, ?)',
-                 [request.form['title'], request.form['text']])
-    g.db.commit()
-    flash('New entry was successfully posted')
-    return redirect(url_for('server_status'))
-"""
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        email_access = request.form['email']
-        password_access = request.form['password']
-        access_user = User.query.filter_by(email=email_access).first()
-        check = access_user is None
-        if check:
-            error = 'Invalid username'
-        elif not (check_password_hash(access_user.password,password_access)):
-            error = 'Invalid password'
-        else:
-            session['logged_in'] = True
-            flash('You were logged in')
-            return redirect(url_for('server_status'))
-    return render_template('login.html', error=error)
-    
-    
-@app.route('/settings')
-def settings():
-    pass
-
-
-
-@app.route('/logout')
-def logout():
-    session.pop('logged_in', None)
-    flash('You were logged out')
-    return redirect(url_for('server_status'))
 
 
 if __name__ == '__main__':
