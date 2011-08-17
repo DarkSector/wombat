@@ -85,8 +85,8 @@ p
    -moz-border-radius: 15px 15px 15px 15px;
    -webkit-border-radius: 15px 15px 15px 15px;
    cursor: pointer;
-   /*-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-   -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);*/
+   -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+   -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
    /*text-shadow: 0 1px 1px #FFFFFF;*/
    border:1px solid rgba(0, 0, 0, 0.25);
 
@@ -100,19 +100,25 @@ p
 
 .content
 {
-    width: 960px;
+    
     margin: 0 auto;
     overflow: hidden;
     padding-top: 80px;
+    /*border: 1px solid red;*/
+    float: left;
+    
 }
 
 
 .legal
 {
-    float: right;
-    width: 750px;
+    
     overflow: hidden;
     min-height: 400px;
+    /*border: 1px solid blue;*/
+    float: right;
+    width: 960px;
+    padding-left: 50px;
 }
 
 .admin
@@ -140,10 +146,10 @@ p
     width: 200px;
     overflow: hidden;
     float: left;
-    min-height: 600px;
-    overflow: hidden;
+    
+    /*border: 1px solid red;*/
+    
 }
-
 
 
 .nav ul
@@ -183,15 +189,16 @@ p
 .footer
 {
     overflow: hidden;
-    margin-left: 400px;
+    float: left;
+    margin: 0 auto;
 
 }
 
-.footer a 
+.footer a
 {
     text-decoration: none;
-
 }
+
 .footer ul
 {
     list-style-type: none;
@@ -200,6 +207,7 @@ p
 .footer li
 {
     display: inline;
-    padding-left: 40px;
+    padding-left: 10px;
+
     
 }
