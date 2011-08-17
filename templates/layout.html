@@ -9,6 +9,7 @@
       <div class="header">
         <div class="logo">
             <a href="{{ url_for('server_status') }}"><p>W<span>o</span>mbat</p></a>
+            
         </div>
             <div class="admin">
                 {% if not session.logged_in %}
@@ -17,19 +18,22 @@
                 {% else %}
                 Hi, {% print session.username %}              
                 <a class="button" href="{{ url_for('logout') }}">logout</a>
+                <a class="button" href="{{ url_for('account_settings') }}">Account Settings</a>
                 {% endif %}
             </div>
 
       </div><!--header ends here -->
 
-        <div class="content">
 
+
+        <div class="content">
             <div class="nav">
                 {% if session.logged_in %}
                 {% block navigation %}
                 {% endblock%}
                 {% endif %}
-            </div>
+      </div>
+            
             <div class="legal">
 
                 {% for message in get_flashed_messages() %}
@@ -44,13 +48,17 @@
             </div>
          </div><!-- content ends here -->
 
+
         
         <div class=footer>
         <ul>
-         <a href="{{ url_for('add_user') }}"><li>Register</li></a>
-         <a href="{{ url_for('know_more') }}"><li>Know More<li></a>
-         <a href="{{ url_for('why') }}"><li>Why?</li></a>
-         <a href="{{ url_for('license') }}"><li>Licensing</li></a>
+         <li><a href="http://www.worldforge.org">WorldForge</a></li>
+         <li><a href="{{ url_for('know_more') }}">Wiki</a><li>
+         <li><a href="http://www.github.com/DarkSector/wombat"><li>Source</li></a></li>
+         <li><a href="{{ url_for('license') }}">Licensing</a><li>
+        </ul>
+        <ul>
+        <li>Wombat  2011 - Pronoy Chopra - Kai Blin - <a href="http://www.worldforge.org">Worldforge.org</a></li>
         </ul>
         </div>
         

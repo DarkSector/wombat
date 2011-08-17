@@ -231,9 +231,41 @@ def logout():
 
 #---------------------not so important functions--------------------------------
 
+@app.route('/forgot_password')
+def forgot_password():
+    pass
+
+
+@app.route('/workbench')
+def workbench():
+    pass
+
 @app.route('/settings')
 def settings():
+    return render_template('settings.html')
+
+@app.route('/settings/account')
+def account_settings():
+    return render_template('account_settings.html')
+    
+
+
+@app.route('/3dviewer')
+def object_viewer():
     pass
+
+@app.route('/status')
+def status_view():
+    pass
+    
+@app.route('/mail')
+def mail():
+    pass
+
+
+@app.route('/docs')
+def show_docs():
+    return render_template('docs.html')
 
 @app.route('/docs/know_more')
 def know_more():
@@ -246,12 +278,6 @@ def why():
 @app.route('/docs/license')
 def license():
     return render_template('license.html')
-
-@app.route('/docs')
-def show_docs():
-    return render_template('docs.html')
-
-
 
 if __name__ == '__main__':
     app.run()
