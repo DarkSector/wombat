@@ -12,8 +12,10 @@
         </div>
             <div class="admin">
                 {% if not session.logged_in %}
+
                 <a class="button" href="{{ url_for('login') }}">login</a>
                 {% else %}
+                Hi, {% print session.username %}              
                 <a class="button" href="{{ url_for('logout') }}">logout</a>
                 {% endif %}
             </div>

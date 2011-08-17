@@ -16,7 +16,7 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
 
 
 {% block server_status %}
-
+    {% if not session.logged_in %}
     <div class=serverstatus>
     <h3>Server Status:</h3>
     <table>
@@ -43,6 +43,7 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
 
     </table>
     </div>
+    {% endif %}
 {% endblock %}
 
   
@@ -51,6 +52,7 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
   <ul>
       
       <li><a href=" {{ url_for('settings') }} ">Settings</a></li>
+      
       
   </ul>
   {% endif %}
