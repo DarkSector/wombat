@@ -34,6 +34,7 @@ from flaskext.bcrypt import bcrypt_init, generate_password_hash, \
     check_password_hash
 from flaskext.wtf import Form, TextField, TextAreaField, PasswordField, \
     SubmitField, Required, ValidationError, validators
+from flaskext.mail import Mail
 
 #-------------------------------------------------------------------------------
 
@@ -47,6 +48,7 @@ app.config.from_object(config_file)
 #use py-bcrypt for hashing password
 bcrypt_init(app)
 
+mail = Mail(app)
 
 
 #all functions need to have to be imported from Base class or SVNfunctions() class
@@ -81,7 +83,7 @@ class LoginForm (Form):
 
 #this is the registeration form
 class RegisterationForm (Form):
-        
+
     #email field: Mandatory
     email = TextField("Email Address", [validators.Length(min=6)])
     
@@ -91,13 +93,11 @@ class RegisterationForm (Form):
         validators.EqualTo('confirm', message='Passwords must match')
     ])
     
+
+    
     #confirm password field: Mandatory
     confirm = PasswordField('Repeat Password')
-    
-    #generate hash of password
-    if confirm == password:
-        password = generate_password(password)
-    
+        
     #name of the user: Non Mandatory
     Name = TextField("Your full name")
     
@@ -109,12 +109,10 @@ class RegisterationForm (Form):
     
     #vcs_password of the user: Non mandatory
     VCS_Password = PasswordField("Your VCS Password")
-    
-    VCS_Password = generate_password_hash(VCS_Password)
-    
-    #querying for known entries for the given email
 
+    submit = SubmitField("Register")   
     
+    #querying for known entries for the given email    
     def validate_username(self,email):
         unidentified = User.query.filter_by(email=email.data).first()
         if unidentified is not None:
@@ -156,7 +154,7 @@ def server_status():
         #gets the revision number
     
     fileSize,fileLength,folderCount = func.get_info(LOCAL_REPO)
-    #unfurl a touple 
+    #unwind a touple 
     
     fileSize = func.convert_bytes(fileSize)
     #convert fileSize in human readable form
@@ -179,21 +177,37 @@ def add_user():
     
     #if posted and email is non empty and password is non empty
     if request.method == 'POST' and form.validate():
-        new_user = User(form.email.data,form.password.data)
+        
+        #need to hash password
+        password_hash = generate_password_hash(form.password.data)
+        new_user = User(form.email.data,password_hash)
         db.session.add(new_user)
         db.session.commit()
         
-        new_user_data = UserData(form.Name.data, form.Nickname.data, \
-            form.VCS_Username.data,form.VCS_Password.data)
+        #bug fixed: if VCS_Password is not empty then hash otherwise not
+        if not (form.VCS_Password.data == ''):
+            #need to hash VCS password
+            VCS_Password_hash = generate_password_hash(form.VCS_Password.data)
+            new_user_data = UserData(form.Name.data, form.Nickname.data, \
+                form.VCS_Username.data,VCS_Password_hash)
         
-        #NOTE: The Password and the VCS_Password are already hashed when obtaining
-        #      the said values from the form
-        #      refer the RegisterationForm class.
+        else:
+            new_user_data= UserData(form.Name.data, form.Nickname.data, \
+                form.VCS_Username.data,form.VCS_Password.data)
+        
         
         db.session.add(new_user_data)
         db.session.commit()
+        
+        access_user = User.query.filter_by(email = form.email.data).first()
+        if not access_user is None:
+            flash('The User details have been registered. ')
+            return redirect(url_for('login'))
+        else:
+            flash("The User doesn't seem to be in our Database yet, please try again")
+        
                     
-    return render_template('add_user.html')
+    return render_template('add_user.html',form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login(): 
