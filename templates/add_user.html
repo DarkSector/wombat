@@ -1,34 +1,38 @@
 {% extends "layout.html" %}
 {% block body %}
   <h2>Register A New User</h2>
-  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+  {% if form.error %}<p class=error><strong>Error:</strong> {{ form.error }}
+  {% endif %}
   <form action="{{ url_for('add_user') }}" method=post>
+  {{ form.hidden_tag() }}
     <dl>
-      <dt>Email*:
-      <dd><input class=login-form type=text name=email>
-      <dt>Password*:
-      <dd><input class=login-form type=password name=password>
+      <dt>{{ form.email.label }}
+      <dd>{{ form.email }}
+      <dt>{{ form.password.label }}
+      <dd>{{ form.password }}
+      <dt>{{ form.confirm.label }}
+      <dd>{{ form.confirm }}
       <dt><p></p>
-      <dd><input type=submit value="Sign me up!">
+      
     </dl>
-    <i>Fields marked with * are mandatory</i>
+    
     <dl>
       
       <dt>Additional Info:
       <dt><p></p>
-      <dt>First name:
-      <dd><input class=login-form type=text name=first-name>
-      <dt>Last name:
-      <dd><input class=login-form type=text name=last-name>
-      <dt>Nickname:
-      <dd><input class=login-form type=text name=nick>
-      <dt>VCS Username:
-      <dd><input class=login-form type=text name=vcs-username>
-      <dt>VCS Password:
-      <dd><input class=login-form type=text name=vcs-password>
-      <dt>User ID:
-      <dd><input class=login-form type=text name=user-id>
+      <dt>{{ form.Name.label}}
+      <dd>{{ form.Name }}
+      <dt>{{ form.Nickname.label }}
+      <dd>{{ form.Nickname }}
+      <dt>{{ form.VCS_Username.label }}
+      <dd>{{ form.VCS_Username }}
+      <dt>{{ form.VCS_Password.label }}
+      <dd>{{ form.VCS_Password }}
     </dl>
+    
+    <i>Fields marked with * are mandatory</i>
+    <dd>{{ form.submit }}
+    
     
   </form>
 {% endblock %}

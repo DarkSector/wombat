@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block navigation %}
+  {% if session.logged_in %}
+  <ul>
+      
+      <li><a class="button" href=" {{ url_for('server_status') }} ">Repository</a></li>
+      <li><a class="button" href=" {{ url_for('object_viewer') }} ">3D Viewer</a></li>    
+      <li><p></p></li>  
+      <li><a class="button" href=" {{ url_for('settings') }} ">Settings</a></li>
+        <ul>
+            <li><a class="button" href="{{ url_for('account_settings') }}">Profile</a></li>
+            <li><a class="button" href="">Look & Feel</a></li>
+        </ul>
+      <li><p></p> </li>
+      <li><a class="button" href=" {{ url_for('workbench') }} ">Workbench</a></li>
+      <li><a class="button" href=" {{ url_for('status_view') }} ">Status</a></li>
+      <li><a class="button" href=" {{ url_for('mail') }} ">Mail</a></li>
+      
+  </ul>
+  {% endif %}
+{% endblock %}
