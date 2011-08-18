@@ -59,3 +59,5 @@ build and copy the OgreApp binary to the dist/bin so that it can have resource.c
 
 The application will not work out of the box because the database doesn't consist of the tables being used in the code
 they have been changed. Wombat is being ported to work on the updated Database
+
+UPDATE: Application now works out of the box, you just need to follow the README to initialize the Database and Repository
