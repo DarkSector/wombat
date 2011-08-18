@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block navigation %}
+  {% if session.logged_in and session.username == "admin@worldforge.org"%}
+  <ul>
+      
+      <li><a class="button" href=" {{ url_for('server_status') }} ">Repository</a></li>
+      <li><a class="button" href=" {{ url_for('object_viewer') }} ">3D Viewer</a></li> 
+      <li><a class="button" href=" {{ url_for('settings') }} ">Settings</a></li>
+      <li><a class="button" href=" {{ url_for('workbench') }} ">Workbench</a></li>
+      <li><a class="button" href=" {{ url_for('status_view') }} ">Status</a></li>
+     
+      <li><a class="button" href=" {{ url_for('mail') }} ">Mail</a></li>
+        <ul>
+            <li><a class="button" href="{{ url_for('mail_inbox') }}">Inbox</a></li>
+            <li><a class="button" href="">New Mail</a></li>
+        </ul>
+      
+  </ul>
+  
+ 
+
+{% else %}
+
+  <p>We would love to give you this facility. But first, you'll need to grow up
+  mentally and physically. That's how you become admin. Our current admin is crappy
+  so kindly drop in your resume at this link</p>
+
+{% endif %}
+
+{% endblock %}

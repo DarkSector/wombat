@@ -16,7 +16,7 @@
 
                 <a class="button" href="{{ url_for('login') }}">login</a>
                 {% else %}
-                Hi, {% print session.username %}              
+                {% print session.username %}              
                 <a class="button" href="{{ url_for('logout') }}">logout</a>
                 <a class="button" href="{{ url_for('account_settings') }}">Account Settings</a>
                 {% endif %}
@@ -29,17 +29,25 @@
         <div class="content">
             <div class="nav">
                 {% if session.logged_in %}
-                {% block navigation %}
-                {% endblock%}
-                {% endif %}
-      </div>
+                {% block navigation%}
+                {% endblock %}
+                
+                {% block mail%}
+                {% endblock %}
+                
+                {% endif %}                  
+          </div>
             
             <div class="legal">
 
                 {% for message in get_flashed_messages() %}
                 <div class=flash>{{ message }}</div>
                 {% endfor %}
-                {% block body %}{% endblock %}
+                
+
+                {% block body %}
+                           
+                {% endblock %}
                 
                 {% block welcome%}{% endblock %}
                 

@@ -62,7 +62,9 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
       <li><a class="button" href=" {{ url_for('settings') }} ">Settings</a></li>      
       <li><a class="button" href=" {{ url_for('workbench') }} ">Workbench</a></li>
       <li><a class="button" href=" {{ url_for('status_view') }} ">Status</a></li>
-      <li><a class="button" href=" {{ url_for('mail') }} ">Mail</a></li>
+      {% if session.logged_in and session.username == "admin@worldforge.org" %}
+        <li><a class="button" href=" {{ url_for('mail') }} ">Mail</a></li>
+      {% endif%}
       
   </ul>
   {% endif %}

@@ -1,29 +1,26 @@
 {% extends "layout.html" %}
+
 {% block navigation %}
   {% if session.logged_in %}
   <ul>
       
       <li><a class="button" href=" {{ url_for('server_status') }} ">Repository</a></li>
-      <li><a class="button" href=" {{ url_for('object_viewer') }} ">3D Viewer</a></li>    
-      <li><p></p></li>  
+      <li><a class="button" href=" {{ url_for('object_viewer') }} ">3D Viewer</a></li> 
       <li><a class="button" href=" {{ url_for('settings') }} ">Settings</a></li>
-        <ul>
-            <li><a class="button" href="{{ url_for('account_settings') }}">Profile</a></li>
-            <li><a class="button" href="">Look & Feel</a></li>
-        </ul>
-      <li><p></p> </li>
       <li><a class="button" href=" {{ url_for('workbench') }} ">Workbench</a></li>
+      <li><p></p></li>    
+          <ul>
+            <li><a class="button" href="{{ url_for('default_workbench') }}">Default</a></li>
+            <li></li>
+        </ul>
+      <li><p></p></li>
       <li><a class="button" href=" {{ url_for('status_view') }} ">Status</a></li>
       {% if session.logged_in and session.username == "admin@worldforge.org" %}
-      <li><a class="button" href=" {{ url_for('mail') }} ">Mail</a></li>
+        <li><a class="button" href=" {{ url_for('mail') }} ">Mail</a></li>
       {% endif%}
+
+        
       
   </ul>
   {% endif %}
-{% endblock %}
-
-{% block body%}
-
-
-
 {% endblock %}
