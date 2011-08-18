@@ -219,7 +219,7 @@ def login():
     if form.validate_on_submit():
         session['logged_in'] = True
         session['username'] = form.username.data
-        if session['login']:
+        if session['login_in']:
             flash('You were logged in '+ session['username'])
         else:
             flash('you were not logged in')
