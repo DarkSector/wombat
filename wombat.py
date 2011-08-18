@@ -117,6 +117,10 @@ class RegisterationForm (Form):
         unidentified = User.query.filter_by(email=email.data).first()
         if unidentified is not None:
             raise ValidateError, "Username already exists"
+            
+            
+        
+
 
 
 #-----------------------------database related actions--------------------------
@@ -233,12 +237,12 @@ def logout():
 
 @app.route('/forgot_password')
 def forgot_password():
-    pass
+    return render_template('forgot_password.html')
 
 
 @app.route('/workbench')
 def workbench():
-    pass
+    return render_template('workbench.html')
 
 @app.route('/settings')
 def settings():
@@ -249,19 +253,21 @@ def account_settings():
     return render_template('account_settings.html')
     
 
-
 @app.route('/3dviewer')
 def object_viewer():
-    pass
+    return render_template('3dviewer.html')
 
 @app.route('/status')
 def status_view():
-    pass
+    return render_template('status.html')
     
 @app.route('/mail')
 def mail():
-    pass
+    return render_template('mail.html')
 
+@app.route('/mail/inbox')
+def mail_inbox():
+    return render_template('mail_inbox.html')
 
 @app.route('/docs')
 def show_docs():
