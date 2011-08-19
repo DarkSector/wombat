@@ -35,7 +35,7 @@ from flaskext.bcrypt import bcrypt_init, generate_password_hash, \
 from flaskext.wtf import Form, TextField, TextAreaField, PasswordField, \
     SubmitField, Required, ValidationError, validators
 from flaskext.mail import Mail
-
+import os
 #-------------------------------------------------------------------------------
 
 # create our  application :)
@@ -53,7 +53,7 @@ mail = Mail(app)
 
 #all functions need to have to be imported from Base class or SVNfunctions() class
 func = Base()
-svn = SVNfunctions()
+svn = SVNfunctions(app.config['LOCAL_REPO'])
 
 #-----------------------All forms are defined here------------------------------
 
@@ -233,7 +233,32 @@ def logout():
     return redirect(url_for('server_status'))
 
 
-#---------------------not so important functions--------------------------------
+#---------------------not so important pages------------------------------------
+
+@app.route('/navigator', methods=['GET', 'POST'])
+def navigator():
+    path =  request.args['path']
+    repo_path = app.config['LOCAL_REPO']
+    
+    path = path[1:]
+        
+    requested_path = os.path.join(repo_path, path)
+    
+    if not os.path.exists(requested_path):
+        return render_template("navigator.html", 
+                                listType="PATHNOTFOUND")
+        
+    elif not os.path.isdir(requested_path):
+        return render_template("navigator.html", 
+                                listType="SHOWFILE", 
+                                path=requested_path)
+    else:
+        return render_template('navigator.html', 
+                                listType = "SHOWDIRECTORY",
+                                path="/" + path, 
+                                listing=svn.get_dir_info(path, requested_path))
+        
+
 
 @app.route('/forgot_password')
 def forgot_password():
