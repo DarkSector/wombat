@@ -93,8 +93,6 @@ class RegisterationForm (Form):
         validators.EqualTo('confirm', message='Passwords must match')
     ])
     
-
-    
     #confirm password field: Mandatory
     confirm = PasswordField('Repeat Password')
         
@@ -117,12 +115,25 @@ class RegisterationForm (Form):
         unidentified = User.query.filter_by(email=email.data).first()
         if unidentified is not None:
             raise ValidateError, "Username already exists"
-            
-            
+     
+     
+     
+    class UpdateForm (Form):
         
-
-
-
+        username = TextField("Your new email")
+        password = PasswordField("New Password", [
+                                validators.Required(),
+                                validators.EqualTo('confirm', 
+                                message='Passwords must match')
+                                ])
+        confirm = PasswordField("Your new password again")
+        Name = TextField("Your name")
+        Nickname = TextField("Your nickname")    
+        VCS_Username = TextField("Your VCS Username")
+        VCS_Password = PasswordField("Your VCS Password")
+        Update = SubmitField("Update Information")
+           
+            
 #-----------------------------database related actions--------------------------
 
 
@@ -164,7 +175,7 @@ def server_status():
     #convert fileSize in human readable form
     
     serverdict = (dict(url_out=url_out,revision=revision,fileSize=fileSize, \
-        fileLength=fileLength,folderCount=folderCount,first_view=FIRST_VIEW)) 
+        fileLength=fileLength,folderCount=folderCount)) 
     #create a dict out of the information that needs to be passed to the template
 
     return render_template('server_status.html',serverdict=serverdict)
@@ -219,10 +230,13 @@ def login():
     if form.validate_on_submit():
         session['logged_in'] = True
         session['username'] = form.username.data
+        #session['Name'] = form.Name.data
+        #session['Nickname'] = form.Nickname.data
+        #session['VCS_Password'] = form.VCS_Password.data
         if session['logged_in']:
-            flash('You were logged in '+ session['username'])
+            flash('You were logged in as '+ session['username'])
         else:
-            flash('you were not logged in')
+            flash('oops you were not logged in')
         return redirect(url_for('server_status'))
     return render_template('login.html', form=form)
 
