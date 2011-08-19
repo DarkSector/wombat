@@ -251,7 +251,7 @@ def navigator():
     elif not os.path.isdir(requested_path):
         return render_template("navigator.html", 
                                 listType="SHOWFILE", 
-                                path=requested_path)
+                                path=path)
     else:
         return render_template('navigator.html', 
                                 listType = "SHOWDIRECTORY",
