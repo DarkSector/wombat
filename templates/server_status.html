@@ -1,15 +1,15 @@
 {% extends "layout.html" %}
 
 {% block welcome %}
-{% if serverdict['first_view'] %}
-<p class="welcome"><span>hello,</span></p>
+{% if config['FIRST_VIEW'] and not session.logged_in %}
+<p class="welcome"><span>hello,</span><img src = {{ url_for('static', filename='images/Wombat.png') }}></p>
 <p>Welcome to Wombat. Wombat is an Asset Management System created to provide an easier user interface to an svn repository. It's created using
 flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">register yourself</a> with Wombat and explore its cool features. If you've already registered try<a href="{{ url_for('login') }}"> logging in here</a></p>
 <ul>
-    <a href="{{ url_for('add_user') }}"><li>Great! I am sold, where do I register?</li></a>
-    <a href="{{ url_for('know_more') }}"><li>No wait, wombat is a what?<li></a>
-    <a href="{{ url_for('why') }}"><li>Why was this thing created?</li></a>
-    <a href="{{ url_for('license') }}"><li>Woah! hold on, this looks fishy. Where do I find its source code?</li></a>
+    <li><a href="{{ url_for('add_user') }}">Great! I am sold, where do I register?</a></li>
+    <li><a href="{{ url_for('know_more') }}">No wait, wombat is a what?</a></li>
+    <li><a href="{{ url_for('why') }}">Why was this thing created?</a></li>
+    <li><a href="{{ url_for('license') }}">Woah! hold on, this looks fishy. Where do I find its source code?</a></li>
 </ul>
 {% endif %}
 {% endblock %}
