@@ -256,7 +256,7 @@ def navigator():
         return render_template('navigator.html', 
                                 listType = "SHOWDIRECTORY",
                                 path="/" + path, 
-                                listing=svn.get_dir_info(path, requested_path))
+                                listing=svn.get_dir_info(path))
         
 
 
