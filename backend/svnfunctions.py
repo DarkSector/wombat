@@ -1,26 +1,74 @@
+import os
 import pysvn
+from functions import Base
 
+func = Base()
 
 class SVNfunctions:
+    def __init__(self, path):
+        self.path = path
+        self.client = pysvn.Client()
+        
     def checkout_repo(self,link,local_link):
-        client = pysvn.Client()
-        client.checkout(link,local_link)
+        self.client.checkout(link,local_link)
 
     def update_copy(self):
-        client = pysvn.Client()
-        client.update('./repository')
+        self.client.update(self.path)
 
     def get_url(self):
-        client = pysvn.Client()
-        entry = client.info('./repository')
+        entry = self.client.info(self.path)
         return entry.url
 
     def get_dir_content(self,updated_link):
-        client = pysvn.Client()
-        entry_list = client.ls('.')
+        entry_list = self.client.ls('.')
         return entry_list
 
     def get_revision_no(self):
-        client = pysvn.Client()
-        rev_no = client.info('./repository').revision.number
+        rev_no = self.client.info(self.path).revision.number
         return rev_no
+        
+    def get_info(self, filePath):
+        fullPath = os.path.join(self.path, filePath)
+        entries = self.client.info2(fullPath, recurse=False)
+        
+        infoDict = {}
+        
+        for p, i in entries:
+            for k in i:
+                infoDict[k] = i[k]
+                
+        return infoDict
+        
+    def get_dir_info(self, path, requested_path):
+        items = os.listdir(requested_path)
+
+        listing = []    
+        
+        for i in items:
+            objectInfo = {}
+            
+            if i == ".svn":
+                continue
+                
+            fullPath = os.path.join(self.path, path, i)
+            relativePath = os.path.join(path, i)
+            
+            fileType = func.getType(i)
+
+            if fileType == "other":
+                if os.path.isdir(fullPath):
+                    fileType = "directory"
+                elif os.path.isfile(fullPath):
+                    fileType = "unknown"
+        
+            objectInfo['name'] = i
+            objectInfo['fileType'] = fileType
+            objectInfo['path'] = "/" + relativePath
+            objectInfo['svndetails'] = self.get_info(relativePath)
+            
+            listing.append(objectInfo)
+        
+        return listing
+        
+        
+        
