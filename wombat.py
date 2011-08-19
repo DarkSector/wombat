@@ -215,11 +215,11 @@ def add_user():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login(): 
-    form = LoginForm(request.form)
+    form = formLoginForm(request.form)
     if form.validate_on_submit():
         session['logged_in'] = True
         session['username'] = form.username.data
-        if session['login_in']:
+        if session['logged_in']:
             flash('You were logged in '+ session['username'])
         else:
             flash('you were not logged in')
