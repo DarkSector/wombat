@@ -17,6 +17,8 @@ a
 {
     color: #aaa;
     text-decoration: underline;
+    border: 0;
+    outline: 0;
 }
 
 a:hover
@@ -129,6 +131,15 @@ p
 }
 
 
+
+
+.serverstatus td
+{
+    background-color: #555;
+    color: #101010;
+    padding-right: 50px;
+}
+
 .flash
 { 
 	padding: 0.5em;
@@ -136,7 +147,7 @@ p
 }
 .error
 { 	
-	/*background: #; */
+
 	padding: 0.5em; 
 }
 
