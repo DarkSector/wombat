@@ -55,7 +55,7 @@ flask and SQLAlchemy. To get started, <a href="{{ url_for('add_user')}}">registe
       <li><a class="button" href=" {{ url_for('server_status') }} ">Repository</a></li>      
         <ul>
             <li><a class="button" href="{{ url_for('server_status') }}">Server Status</a></li>
-            <li><a class="button" href="">Navigator</a></li>
+            <li><a class="button" href="{{ url_for('navigator') + '?path=/' }}">Navigator</a></li>
         </ul>
       <li><p></p> </li>
       <li><a class="button" href=" {{ url_for('object_viewer') }} ">3D Viewer</a></li>    
