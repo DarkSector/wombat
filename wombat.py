@@ -215,7 +215,7 @@ def add_user():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login(): 
-    form = formLoginForm(request.form)
+    form = LoginForm(request.form)
     if form.validate_on_submit():
         session['logged_in'] = True
         session['username'] = form.username.data
