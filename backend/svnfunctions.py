@@ -39,8 +39,10 @@ class SVNfunctions:
                 
         return infoDict
         
-    def get_dir_info(self, path, requested_path):
-        items = os.listdir(requested_path)
+    def get_dir_info(self, path):
+        items = self.client.ls(os.path.join(self.path, path))
+        
+        items = [str(os.path.basename(i['name'])) for i in items]
 
         listing = []    
         
