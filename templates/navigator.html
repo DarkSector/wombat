@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+{% block navigation %}
+  {% if session.logged_in %}
+  <ul>
+
+      <li><a class="button" href=" {{ url_for('server_status') }} ">Repository</a></li>      
+        <ul>
+            <li><a class="button" href="{{ url_for('server_status') }}">Server Status</a></li>
+            <li><a class="button" href="{{ url_for('navigator') + '?path=/' }}">Navigator</a></li>
+        </ul>
+      <li><p></p> </li>
+      <li><a class="button" href=" {{ url_for('object_viewer') }} ">3D Viewer</a></li>    
+      <li><a class="button" href=" {{ url_for('settings') }} ">Settings</a></li>      
+      <li><a class="button" href=" {{ url_for('workbench') }} ">Workbench</a></li>
+      <li><a class="button" href=" {{ url_for('status_view') }} ">Status</a></li>
+      {% if session.logged_in and session.username == "admin@worldforge.org" %}
+        <li><a class="button" href=" {{ url_for('mail') }} ">Mail</a></li>
+      {% endif%}
+      
+  </ul>
+  {% endif %}
+{% endblock %}
+
+
+
+
+{% block body %}
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".showmore").click(function () {
+      $("#moreinfo-"+($(this).attr("id").replace("more-", ""))).toggle("slow");
+      
+      $(this).html($(this).html() == "View More Info" ? "Hide More Info" : "View More Info");
+      
+      return false;
+    });
+  });
+</script>
+
+{% if listType == "PATHNOTFOUND" %}
+
+  <p>path not found. what were you expecting?</p>
+
+{% elif listType == "SHOWFILE" %}
+
+{% elif listType == "SHOWDIRECTORY" %}
+  <p>Listing for path: {{ path }}</p>
+  {% for item in listing %}
+    {% if item['fileType'] == 'directory' %}
+      <div>
+        <p>
+          <a href="{{ url_for('navigator') + '?path=' + item['path'] }}">{{ item['name'] }}</a> - 
+          <small>Type = {{item['fileType']}}</small>
+          <small><a id="{{ 'more-' + item['name'] }}" class="showmore" href="#">View More Info</a></small>
+        </p>
+        <div id="{{ 'moreinfo-' + item['name'] }}" style="display: none; margin-left: 30px;">
+           <table>
+            {% for k in item['svndetails'] %}
+              <tr><td>{{ k }}</td><td>{{ item['svndetails'][k] }}</td>
+            {% endfor %}
+           </table>
+        </div>
+      </div> 
+    {% elif item['fileType'] == 'unknown' %}
+      <div>
+        <p>
+          {{ item['name'] }} - 
+          <small>Type = {{item['fileType']}}</small>
+          <small><a id="{{ 'more-' + item['name'] }}" class="showmore" href="#">View More Info</a></small>
+        </p>
+        <div id="{{ 'moreinfo-' + item['name'] }}" style="display: none; margin-left: 30px;">
+           <table>
+            {% for k in item['svndetails'] %}
+              <tr><td>{{ k }}</td><td>{{ item['svndetails'][k] }}</td>
+            {% endfor %}
+           </table>
+        </div>
+      </div> 
+    {% else %}
+      <div>
+        <p>
+          {{ item['name'] }} - 
+          <small>Type = {{item['fileType']}}</small>
+          <small><a id="{{ 'more-' + item['name'] }}" class="showmore" href="#">View More Info</a></small>
+        </p>
+        <div id="{{ 'moreinfo-' + item['name'] }}" style="display: none; margin-left: 30px;">
+           <table>
+            {% for k in item['svndetails'] %}
+              <tr><td>{{ k }}</td><td>{{ item['svndetails'][k] }}</td>
+            {% endfor %}
+           </table>
+        </div>
+      </div> 
+    {% endif %}
+  {% endfor %}
+
+{% endif %}
+
+{% endblock %}
+
