@@ -1,5 +1,6 @@
 #important functions
 import os
+from flaskext.mail import Mail
 #from wombat_config.config_file import DATABASE
 img_inline = ['.gif', '.jpg', '.png']
 image_exts = ['.bmp', '.gif', '.ico', '.jpg', '.png', '.psd',
@@ -30,8 +31,10 @@ class Base (object):
 
         if ext in image_exts:
             type = "image"
-        elif ext in model_exts:
+        elif ext in model_exts and not ext == ".mesh":
             type = "model"
+        elif ext == ".mesh":
+            type = "mesh"
         elif ext in sound_exts:
             type = "sound"
         elif ext in text_exts:
@@ -84,3 +87,13 @@ class Base (object):
                     size = '%.2fb' % bytes
             return size
     
+    
+    def send_activation(self,username):
+        
+        
+    def random_hash(self,seed):
+        
+        
+    
+        
+        

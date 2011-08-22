@@ -10,7 +10,6 @@
             <li><a class="button" href="{{ url_for('navigator') + '?path=/' }}">Navigator</a></li>
         </ul>
       <li><p></p> </li>
-      <li><a class="button" href=" {{ url_for('object_viewer') }} ">3D Viewer</a></li>    
       <li><a class="button" href=" {{ url_for('settings') }} ">Settings</a></li>      
       <li><a class="button" href=" {{ url_for('workbench') }} ">Workbench</a></li>
       <li><a class="button" href=" {{ url_for('status_view') }} ">Status</a></li>
@@ -80,7 +79,7 @@
         </div>
       </div> 
     {% else %}
-      <div>
+        <div>
         <p>
           {{ item['name'] }} - 
           <small>Type = {{item['fileType']}}</small>

@@ -51,15 +51,21 @@ class Asset(db.Model):
 
 class User(db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.Text)
     password = db.Column(db.Text)
+    
+    #users can't login until the field is active
     active = db.Column(db.Boolean)
+    
+    #hashvalue for uses with email activation
+    hashvalue = db.Column(db.Text)
 
-    def __init__(self,email,password,active=False):
+    def __init__(self,email,password,active=False,hashvalue=None):
         self.email = email
         self.password = password
         self.active = active
+        self.hashvalue = hashvalue
 
 class UserData(db.Model):
     __tablename__ = 'user_data'

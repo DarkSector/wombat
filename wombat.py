@@ -59,7 +59,6 @@ svn = SVNfunctions(app.config['LOCAL_REPO'])
 
 class LoginForm (Form):
     
-    
     username = TextField("Email")
     password = PasswordField("Password")
     submit = SubmitField("Login")
@@ -79,6 +78,11 @@ class LoginForm (Form):
             condition = check_password_hash(access_user.password, password.data)
         if not condition:
             raise ValidationError, "Invalid Password"
+    
+    def validate_user(self,username):
+        access_user = User.query.filter_by(email = username.data).first()
+        if not access_user.active:
+            raise ValidationError, "User not Active"
 
 
 #this is the registeration form
@@ -114,13 +118,13 @@ class RegisterationForm (Form):
     def validate_username(self,email):
         unidentified = User.query.filter_by(email=email.data).first()
         if unidentified is not None:
-            raise ValidateError, "Username already exists"
+            raise ValidationError, "Username already exists"
      
      
      
     class UpdateForm (Form):
         
-        username = TextField("Your new email")
+        #username = TextField("Your new email")
         password = PasswordField("New Password", [
                                 validators.Required(),
                                 validators.EqualTo('confirm', 
@@ -133,6 +137,17 @@ class RegisterationForm (Form):
         VCS_Password = PasswordField("Your VCS Password")
         Update = SubmitField("Update Information")
            
+           
+     class ForgotPassword (Form):
+         
+         username = TextField("Your Email/Username ")
+         submit = SubmitField("Check for Username")
+         
+         def validate_email(self,username):
+             forgetful_user = User.query.filter_by(email=username.data).first()
+             if forgetful_user is None:
+                 raise ValidationError, "Username doesn't exist"
+         
             
 #-----------------------------database related actions--------------------------
 
@@ -214,10 +229,15 @@ def add_user():
         db.session.add(new_user_data)
         db.session.commit()
         
+        #simple check to see if the user has been registered
         access_user = User.query.filter_by(email = form.email.data).first()
         if not access_user is None:
             flash('The User details have been registered. ')
-            return redirect(url_for('login'))
+            #func.send_activation(form.email.data)
+            
+            #status of registeration
+            registeration_status="Sent email to user for activation"
+            return redirect(url_for('login'), registered=registeration_status)
         else:
             flash("The User doesn't seem to be in our Database yet, please try again")
         
@@ -230,9 +250,6 @@ def login():
     if form.validate_on_submit():
         session['logged_in'] = True
         session['username'] = form.username.data
-        #session['Name'] = form.Name.data
-        #session['Nickname'] = form.Nickname.data
-        #session['VCS_Password'] = form.VCS_Password.data
         if session['logged_in']:
             flash('You were logged in as '+ session['username'])
         else:
@@ -245,9 +262,6 @@ def login():
 def logout():
     session.pop('logged_in', None)
     return redirect(url_for('server_status'))
-
-
-#---------------------not so important pages------------------------------------
 
 @app.route('/navigator', methods=['GET', 'POST'])
 def navigator():
@@ -266,17 +280,26 @@ def navigator():
         return render_template("navigator.html", 
                                 listType="SHOWFILE", 
                                 path=path)
+                                
     else:
         return render_template('navigator.html', 
                                 listType = "SHOWDIRECTORY",
                                 path="/" + path, 
                                 listing=svn.get_dir_info(path))
+#---------------------not so important pages------------------------------------
+
+
         
 
 
+@app.route('/activate/<username>/<hash>')
+def activate_username():
+
 @app.route('/forgot_password')
 def forgot_password():
-    return render_template('forgot_password.html')
+    form = ForgotPassword(request.form)
+    if form.validate_on_submit():
+        return render_template('forgot_password.html')
 
 
 @app.route('/workbench')
@@ -289,12 +312,16 @@ def settings():
 
 @app.route('/settings/account')
 def account_settings():
+    form = UpdateForm(request.form)
+    if request.method == 'POST' and form.validate():
+        logged_user = session['username']
+        request_user = User.query.filter_by(username = logged_user).first()
+        
+        
+        
+        
     return render_template('account_settings.html')
-    
 
-@app.route('/3dviewer')
-def object_viewer():
-    return render_template('3dviewer.html')
 
 @app.route('/status')
 def status_view():

@@ -174,6 +174,14 @@ p
     color: #0099ff;
 }
 
+
+.welcome ul
+{
+    padding: none;
+    margin: 0;
+
+
+}
 .know_more
 {
     font-size: 20px;
@@ -228,7 +236,12 @@ p
 /*-----------------------------assets styling---------------------------------*/
 
 
+.navigators table
+{
 
+    border: 1px solid #ccc;
+
+}
 
 
 
